@@ -1,0 +1,1181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Study plan: system design, DevOps, AI and DSA</title>
+<meta name="description" content="A 168-day plan for system design, DevOps and building with AI, plus 84 days of DSA, one topic a day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F6F3; --surface:#FFFFFF; --ink:#1B2230; --muted:#5B6474; --line:#D9DDE3; --soft:#ECEEEA;
+  --hld:#2F63D6; --lld:#1F8A5B; --ai:#B0247A; --dsa:#6D4ACF; --devops:#0E7C86; --ddia:#8A5A12; --danger:#B42318; --revise:#C98A00;
+  --sans:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --cond:"Barlow Condensed", "Arial Narrow", "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10141C; --surface:#171C26; --ink:#E7EAF0; --muted:#9AA3B2; --line:#2A3140; --soft:#1C2230;
+    --hld:#7BA0F2; --lld:#4CC08A; --ai:#E46AB6; --dsa:#A890F7; --devops:#4FC3CC; --ddia:#D9A55A; --danger:#F97066; --revise:#F2B53A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10141C; --surface:#171C26; --ink:#E7EAF0; --muted:#9AA3B2; --line:#2A3140; --soft:#1C2230;
+  --hld:#7BA0F2; --lld:#4CC08A; --ai:#E46AB6; --dsa:#A890F7; --devops:#4FC3CC; --ddia:#D9A55A; --danger:#F97066; --revise:#F2B53A;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--hld);outline-offset:2px}
+.t-hld{--c:var(--hld)} .t-lld{--c:var(--lld)} .t-ai{--c:var(--ai)} .t-ddia{--c:var(--ddia)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding:20px 0 12px;border-bottom:1px solid var(--line)}
+.brand h1{font-family:var(--cond);font-weight:700;font-size:26px;line-height:1;margin:0;letter-spacing:.01em}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sync{color:var(--muted);font-size:14px;margin-right:4px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;min-height:40px;font-weight:700;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.primary:hover{opacity:.9}
+.btn.quiet{background:transparent}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:center;padding:32px 0 36px;border-bottom:1px solid var(--line)}
+.day{font-family:var(--cond);font-weight:700;font-size:clamp(76px,12vw,132px);line-height:.82;margin:0;color:var(--c);letter-spacing:-.01em}
+.day .of{font-weight:500;font-size:.3em;color:var(--muted);margin-left:.18em;letter-spacing:0}
+.hero h2{font-size:clamp(22px,3vw,30px);line-height:1.2;margin:16px 0 8px;max-width:30ch}
+.meta{margin:0;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{display:inline-block;font-weight:700;font-size:13px;line-height:1.6;padding:0 9px;border-radius:999px;background:var(--c);color:var(--bg)}
+.hint{margin:12px 0 0;max-width:52ch;color:var(--ink)}
+.hint:empty{display:none}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+
+.plan{--cell:16px;--gap:4px}
+.gridwrap{overflow-x:auto;padding:4px 4px 2px;max-width:100%}
+.weeknums,.grid,.bands{display:grid;grid-template-columns:repeat(var(--cols,17),var(--cell));column-gap:var(--gap);width:max-content}
+.weeknums span{font-family:var(--cond);font-size:12px;color:var(--muted);text-align:center;line-height:1.4}
+.grid{grid-template-rows:repeat(7,var(--cell));grid-auto-flow:column;row-gap:var(--gap);margin:4px 0 10px}
+.cell{width:var(--cell);height:var(--cell);padding:0;border-radius:3px;border:1px solid var(--line);background:transparent;cursor:pointer}
+.cell:hover{border-color:var(--c)}
+.cell.done{background:var(--c);border-color:var(--c)}
+.cell.doing{background:linear-gradient(to top,var(--c) 50%,transparent 50%);border-color:var(--c)}
+.cell.revise{background:var(--revise);border-color:var(--revise)}
+.cell.review{border-style:dashed}
+.cell.current{outline:2px solid var(--ink);outline-offset:1px}
+.band{border-top:3px solid var(--c);padding-top:4px;font-size:13px;font-weight:700;color:var(--c);white-space:nowrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0 0;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--muted);display:inline-block}
+.sw.done{background:var(--muted)} .sw.doing{background:linear-gradient(to top,var(--muted) 50%,transparent 50%)} .sw.revise{background:var(--revise);border-color:var(--revise)}
+@media (prefers-reduced-motion: no-preference){
+  .grid.intro .cell{animation:pop .45s cubic-bezier(.2,.7,.3,1) both;animation-delay:calc(var(--w) * 28ms)}
+  @keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+}
+
+/* progress */
+.progress{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px 40px;align-items:center;padding:24px 0}
+.summary{margin:0;font-size:18px}
+.bars{display:grid;grid-template-columns:auto minmax(60px,1fr) auto;gap:8px 12px;align-items:center;font-size:14px}
+.bars .name{font-weight:700;color:var(--c)}
+.bars .trk{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;border:1px solid var(--line)}
+.bars .fill{display:block;height:100%;width:0;background:var(--c);transition:width .3s}
+.bars .n{color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;gap:4px;padding:10px 0;border-bottom:1px solid var(--line);border-top:1px solid var(--line)}
+.tablist{display:flex;gap:4px;overflow-x:auto;min-width:0}
+.tab{border:0;background:transparent;padding:8px 12px;border-radius:8px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;min-height:40px}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);background:var(--soft);box-shadow:inset 0 -3px 0 var(--c)}
+.tab small{font-weight:400;margin-left:4px}
+.filter{margin-left:auto;flex-shrink:0}
+select{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px;min-height:40px}
+
+/* lists */
+.week{padding:26px 0 6px}
+.week h3{display:flex;align-items:baseline;gap:12px;margin:0 0 8px;font-size:18px;line-height:1.3}
+.week h3 .wk{font-family:var(--cond);font-weight:700;font-size:23px;color:var(--c);white-space:nowrap}
+.week h3 .cnt{margin-left:auto;color:var(--muted);font-weight:400;font-size:14px;white-space:nowrap}
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.row{border-bottom:1px solid var(--line)}
+.rowbtn{display:grid;grid-template-columns:44px minmax(0,1fr) auto 76px;gap:14px;align-items:center;width:100%;text-align:left;background:transparent;border:0;padding:12px 8px;cursor:pointer;border-radius:6px}
+.rowbtn:hover{background:var(--soft)}
+.row.kind-R > .rowbtn .ttl{font-weight:700}
+.dnum{font-family:var(--cond);font-weight:600;font-size:21px;color:var(--muted);font-variant-numeric:tabular-nums}
+.row.s-done .dnum{color:var(--c)}
+.ttl{display:block}
+.sub{display:block;font-size:13px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;padding:2px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);white-space:nowrap}
+.pill::before{content:"";width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted)}
+.pill.s-done::before{background:var(--c);border-color:var(--c)}
+.pill.s-doing::before{background:linear-gradient(to top,var(--c) 50%,transparent 50%);border-color:var(--c)}
+.pill.s-revise{border-color:var(--revise)}
+.pill.s-revise::before{background:var(--revise);border-color:var(--revise)}
+.conf{display:flex;gap:3px;justify-content:flex-end}
+.conf i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line)}
+.conf i.on{background:var(--c);border-color:var(--c)}
+.editor{display:grid;gap:16px;padding:6px 8px 22px 66px}
+.editor .hint{margin:0;color:var(--muted)}
+.field-label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.seg button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 12px;min-height:38px;cursor:pointer}
+.seg button:hover{border-color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.seg .cap{font-size:13px;color:var(--muted);margin-left:6px}
+.inline{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-end}
+input[type="date"]{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--surface);min-height:38px}
+textarea{display:block;width:100%;min-height:120px;resize:vertical;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);line-height:1.5}
+.empty{padding:40px 0;color:var(--muted)}
+
+
+.t-dsa{--c:var(--dsa)} .t-devops{--c:var(--devops)}
+.gcap{margin:0 0 4px;font-size:13px;font-weight:700;color:var(--muted)}
+.gridwrap + .gridwrap{margin-top:18px}
+.cover{display:grid;gap:16px;margin-top:18px}
+.cover h4{font-size:14px;margin:0 0 6px}
+.checks,.refs,.probs{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.checks label,.probs label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:2px 0}
+.checks input,.probs input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--c);flex-shrink:0;cursor:pointer}
+.checks input:checked + span{color:var(--muted)}
+.probs li{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.probs .vid{font-size:13px;color:var(--muted)}
+.refs{gap:7px}
+.refs li{display:flex;gap:10px;align-items:baseline}
+.chip{font-size:12px;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 6px;min-width:52px;text-align:center;flex-shrink:0;line-height:1.6}
+.cover a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--c);text-decoration-thickness:2px;text-underline-offset:3px}
+.cover a:hover{text-decoration-thickness:3px}
+.probs .vid a{color:var(--muted);text-decoration-thickness:1px}
+.dsa-today{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px 40px;padding:26px 0 30px;border-bottom:1px solid var(--line)}
+.dsa-day{font-family:var(--cond);font-weight:700;font-size:40px;line-height:1;margin:0;color:var(--c)}
+.dsa-day .of{font-weight:500;font-size:.45em;color:var(--muted);margin-left:.2em}
+.dsa-today h2{font-size:22px;line-height:1.25;margin:8px 0 6px}
+.dsa-today .cover{margin-top:0}
+@media (max-width:820px){ .dsa-today{grid-template-columns:1fr} }
+
+
+
+/* Bit, the study buddy */
+.greet{display:flex;align-items:center;gap:20px;padding:22px 0 4px}
+.bot{flex-shrink:0;width:104px;height:104px;padding:0;border:0;background:none;cursor:pointer;border-radius:16px;touch-action:manipulation}
+.bot svg{width:100%;height:100%;overflow:visible;display:block}
+.b-head{fill:var(--surface);stroke:var(--ink);stroke-width:3}
+.b-screen{fill:var(--ink)}
+.b-eye{fill:var(--c)}
+.b-happy{fill:none;stroke:var(--c);stroke-width:3.5;stroke-linecap:round}
+.b-mouth{fill:none;stroke:var(--c);stroke-width:3;stroke-linecap:round}
+.b-line{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+.b-light{fill:var(--c)}
+.b-torso{fill:var(--c);stroke:var(--ink);stroke-width:3}
+.b-ear{fill:var(--ink)}
+.b-badge{fill:var(--surface)}
+.b-shadow{fill:var(--ink);opacity:.12}
+.b-spark{fill:var(--revise)}
+.bot .happy-eyes,.bot .sparkles{opacity:0}
+.bot.happy .eyes{opacity:0} .bot.happy .happy-eyes{opacity:1}
+.bot g,.bot ellipse,.bot circle{transform-box:fill-box;transform-origin:center}
+.bot .arm-r{transform-origin:0% 100%}
+.bubble{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 18px 14px;max-width:640px}
+.bubble::before{content:"";position:absolute;left:-8px;top:50%;width:14px;height:14px;background:var(--surface);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:translateY(-50%) rotate(45deg)}
+.hello{margin:0 0 3px;font-size:14px;font-weight:700;color:var(--muted)}
+.line{margin:0;font-size:19px;line-height:1.4}
+.more{margin-top:6px;font-size:14px}
+@media (prefers-reduced-motion: no-preference){
+  .bot .body{animation:bob 3.4s ease-in-out infinite}
+  .bot .b-shadow{animation:shade 3.4s ease-in-out infinite}
+  .bot .eyes{animation:blink 5.5s infinite}
+  .bot .b-light{animation:glow 2.2s ease-in-out infinite}
+  .bot .arm-r{animation:wave 6s ease-in-out infinite}
+  .bot.cheer .body{animation:jump .95s cubic-bezier(.3,1.5,.5,1)}
+  .bot.cheer .sparkles{animation:spark .95s ease-out}
+  .bot.cheer .arm-r{animation:wave 1s ease-in-out}
+  .line.swap{animation:rise .3s ease both}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  @keyframes shade{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.82)}}
+  @keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+  @keyframes glow{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes wave{0%,72%,100%{transform:rotate(0)}78%{transform:rotate(-22deg)}84%{transform:rotate(12deg)}90%{transform:rotate(-16deg)}96%{transform:rotate(6deg)}}
+  @keyframes jump{0%{transform:translateY(0)}35%{transform:translateY(-18px) rotate(-5deg)}65%{transform:translateY(0) rotate(4deg)}82%{transform:translateY(-5px)}100%{transform:none}}
+  @keyframes spark{0%{opacity:0;transform:scale(.3)}30%{opacity:1}100%{opacity:0;transform:scale(1.25)}}
+}
+@media (max-width:560px){
+  .greet{gap:14px;padding-top:16px}
+  .bot{width:76px;height:76px}
+  .line{font-size:16px}
+  .bubble{padding:10px 14px 12px}
+}
+
+/* today board */
+.today{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
+.panel{padding:30px 36px 34px 0;min-width:0}
+.panel + .panel{padding:30px 0 34px 36px;border-left:1px solid var(--line)}
+.dayrow{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.panel .day{font-size:clamp(56px,7vw,100px);white-space:nowrap}
+.daynav{display:flex;gap:6px;padding-bottom:6px}
+.navbtn{width:40px;height:40px;border:1px solid var(--line);background:var(--surface);border-radius:8px;font-family:var(--cond);font-size:26px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0 0 3px}
+.navbtn:hover:not(:disabled){border-color:var(--c);color:var(--c)}
+.navbtn:disabled{opacity:.35;cursor:default}
+.panel h2{font-size:clamp(21px,2.2vw,27px);line-height:1.22;margin:14px 0 8px}
+.linkbtn{background:none;border:0;padding:0;color:var(--c);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.browsing{font-size:14px}
+.donebadge{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--c)}
+.donebadge::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+@media (prefers-reduced-motion: no-preference){
+  .panel.advance .pbody{animation:rise .34s cubic-bezier(.2,.7,.3,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .cell.pulse{animation:pulse .7s cubic-bezier(.2,.7,.3,1)}
+  @keyframes pulse{0%{transform:scale(1)}35%{transform:scale(1.6)}100%{transform:scale(1)}}
+}
+/* overview */
+.overview{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px 48px;align-items:start;padding:30px 0 34px}
+.overview .summary{font-size:20px;line-height:1.4;margin:0 0 20px;max-width:34ch}
+.activity{margin:0 0 22px}
+.days14{display:flex;gap:4px;margin:2px 0 6px}
+.days14 i{width:18px;height:18px;border-radius:4px;border:1px solid var(--line)}
+.days14 i.on{background:var(--ink);border-color:var(--ink)}
+.days14 i.today{outline:2px solid var(--muted);outline-offset:1px}
+.streak{margin:0;font-size:14px;color:var(--muted)}
+/* header menu */
+.menu{position:relative}
+.menu summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;min-height:40px;padding:0 14px}
+.menu summary::-webkit-details-marker{display:none}
+.menu-pop{position:absolute;right:0;top:calc(100% + 6px);z-index:30;min-width:210px;display:grid;padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.16)}
+.menu-pop button{text-align:left;border:0;background:none;padding:9px 12px;border-radius:6px;cursor:pointer;font-weight:700}
+.menu-pop button:hover{background:var(--soft)}
+.menu-pop .danger{color:var(--danger)}
+/* list mini bar */
+.mini{display:inline-block;width:56px;height:5px;border-radius:3px;background:var(--soft);border:1px solid var(--line);vertical-align:middle;margin-right:8px;overflow:hidden}
+.mini i{display:block;height:100%;background:var(--c)}
+@media (max-width:900px){
+  .today{grid-template-columns:1fr}
+  .panel,.panel + .panel{padding:26px 0 28px;border-left:0}
+  .panel + .panel{border-top:1px solid var(--line)}
+  .overview{grid-template-columns:1fr}
+}
+
+/* notice + footer */
+.notice{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:20;width:min(560px,calc(100% - 32px));background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.notice p{margin:0 0 12px}
+.notice .row-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+footer{padding:36px 0 48px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+footer p{margin:0;max-width:60ch}
+
+@media (min-width:821px){ .plan{--cell:19px;--gap:4px} }
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;gap:28px;padding-top:24px}
+  .progress{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .plan{--cell:12px;--gap:2px}
+  .weeknums span.minor{visibility:hidden}
+  .rowbtn{grid-template-columns:32px minmax(0,1fr) auto;gap:10px;padding:12px 4px}
+  .conf{display:none}
+  .editor{padding-left:4px;padding-right:4px}
+  .tabs{flex-wrap:wrap}
+  .filter{margin-left:0;width:100%}
+  .filter select{width:100%}
+  .top{flex-wrap:nowrap;align-items:flex-start}
+  .tools{flex-direction:column-reverse;align-items:flex-end;gap:4px;flex-shrink:0}
+  .sync{margin:0;font-size:12px;text-align:right;max-width:150px}
+  .tools .btn{font-size:14px;min-height:38px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Study plan</h1>
+      <p>System design, DevOps, AI and DSA, one topic a day</p>
+    </div>
+    <div class="tools">
+      <span class="sync" id="sync" aria-live="polite">Saved in this browser</span>
+      <details class="menu" id="menu">
+        <summary class="btn quiet">Backup</summary>
+        <div class="menu-pop">
+          <button type="button" id="backupBtn">Download backup</button>
+          <button type="button" id="restoreBtn">Restore backup</button>
+          <button type="button" id="resetBtn" class="danger">Clear all progress</button>
+        </div>
+      </details>
+      <input class="sr" type="file" id="restoreInput" accept=".json,application/json" tabindex="-1" aria-hidden="true">
+    </div>
+  </header>
+
+  <section class="greet" id="greet" aria-label="Daily motivation">
+    <button class="bot" id="bot" type="button" aria-label="Bit, your study buddy. Show another line.">
+        <svg viewBox="0 0 120 124" aria-hidden="true" focusable="false">
+          <ellipse class="b-shadow" cx="60" cy="116" rx="27" ry="5"/>
+          <g class="sparkles">
+            <path class="b-spark" d="M16 22 l2 -6 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 z"/>
+            <path class="b-spark" d="M102 16 l1.6 -5 l1.6 5 l5 1.6 l-5 1.6 l-1.6 5 l-1.6 -5 l-5 -1.6 z"/>
+            <path class="b-spark" d="M8 74 l1.4 -4 l1.4 4 l4 1.4 l-4 1.4 l-1.4 4 l-1.4 -4 l-4 -1.4 z"/>
+            <path class="b-spark" d="M110 70 l1.8 -5 l1.8 5 l5 1.8 l-5 1.8 l-1.8 5 l-1.8 -5 l-5 -1.8 z"/>
+          </g>
+          <g class="body">
+            <line class="b-line" x1="60" y1="24" x2="60" y2="12"/>
+            <circle class="b-light" cx="60" cy="9" r="5"/>
+            <rect class="b-ear" x="17" y="42" width="9" height="16" rx="4"/>
+            <rect class="b-ear" x="94" y="42" width="9" height="16" rx="4"/>
+            <rect class="b-head" x="26" y="24" width="68" height="54" rx="17"/>
+            <rect class="b-screen" x="34" y="32" width="52" height="38" rx="11"/>
+            <g class="eyes"><rect class="b-eye" x="45" y="42" width="8" height="13" rx="4"/><rect class="b-eye" x="67" y="42" width="8" height="13" rx="4"/></g>
+            <g class="happy-eyes"><path class="b-happy" d="M44 51 q5 -8 10 0"/><path class="b-happy" d="M66 51 q5 -8 10 0"/></g>
+            <path class="b-mouth" d="M52 60 q8 6 16 0"/>
+            <rect class="b-torso" x="40" y="82" width="40" height="26" rx="11"/>
+            <circle class="b-badge" cx="60" cy="95" r="4.5"/>
+            <path class="b-line" d="M41 89 q-11 5 -13 15"/>
+            <g class="arm-r"><path class="b-line" d="M79 89 q12 -3 16 -15"/></g>
+          </g>
+        </svg>
+    </button>
+    <div class="bubble" aria-live="polite">
+      <p class="hello" id="hello"></p>
+      <p class="line" id="line"></p>
+    </div>
+  </section>
+
+  <section class="today" aria-label="Today">
+    <div class="panel" id="panelMain" aria-live="polite"></div>
+    <div class="panel" id="panelDsa" aria-live="polite"></div>
+  </section>
+
+  <section class="overview" aria-label="Progress">
+    <div>
+      <p class="summary" id="summary"></p>
+      <div class="activity">
+        <p class="gcap">Last 14 days</p>
+        <div class="days14" id="days14" role="img"></div>
+        <p class="streak" id="streakTxt"></p>
+      </div>
+      <div class="bars" id="bars"></div>
+    </div>
+    <div class="plan" aria-label="Your plan, one column per week">
+      <div class="gridwrap">
+        <p class="gcap" id="planCap"></p>
+        <div class="weeknums" id="weeknums" aria-hidden="true"></div>
+        <div class="grid intro" id="grid"></div>
+        <div class="bands" id="bands" aria-hidden="true"></div>
+      </div>
+      <div class="gridwrap t-dsa">
+        <p class="gcap">DSA, 84 days alongside</p>
+        <div class="weeknums" id="weeknums2" aria-hidden="true" style="--cols:12"></div>
+        <div class="grid intro" id="grid2" style="--cols:12"></div>
+      </div>
+      <p class="legend">
+        <span><i class="sw done"></i>Done</span>
+        <span><i class="sw doing"></i>In progress</span>
+        <span><i class="sw revise"></i>Revise</span>
+        <span><i class="sw"></i>Not started</span>
+      </p>
+    </div>
+  </section>
+
+  <nav class="tabs" aria-label="Tracks">
+    <div class="tablist" role="tablist" id="tablist"></div>
+    <label class="filter"><span class="sr">Show</span>
+      <select id="filter">
+        <option value="all">All topics</option>
+        <option value="todo">Still to do</option>
+        <option value="revise">Marked revise</option>
+      </select>
+    </label>
+  </nav>
+
+  <main id="list" role="tabpanel"></main>
+
+  <footer>
+    <p id="footNote">Progress saves as you go. To move it to another browser, download a backup and restore it there. Links open in a new tab; "Search YouTube" links open a search for that topic.</p>
+  </footer>
+</div>
+
+<div class="notice" id="notice" role="dialog" aria-live="assertive" hidden>
+  <p id="noticeText"></p>
+  <div class="row-actions">
+    <button class="btn" id="noticeNo" type="button">Cancel</button>
+    <button class="btn primary" id="noticeYes" type="button"></button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- plan data ---------- */
+var PLAN = {"main":[[1,"hld","How requests flow",[["L","The request lifecycle (DNS → load balancer → server → DB → response)",["DNS lookup and caching","TCP and TLS handshakes","Load balancer and reverse proxy hop","App server, cache and database round-trip","Where latency adds up along the path"],[["Read","Client-server architecture (AlgoMaster)","https://algomaster.io/learn/system-design/client-server-architecture"],["Read","How DNS actually works (AlgoMaster)","https://blog.algomaster.io/p/how-dns-actually-works"],["Watch","Search YouTube: ByteByteGo what happens when you type a URL into a browser","https://www.youtube.com/results?search_query=ByteByteGo+what+happens+when+you+type+a+URL+into+a+browser"]],"d1"],["L","Client-server model, HTTP/HTTPS, status codes",["Client-server vs peer-to-peer","HTTP methods, and which are idempotent","Status code families: 2xx, 3xx, 4xx, 5xx","Headers, cookies and keep-alive","HTTPS and TLS basics","HTTP/1.1 vs HTTP/2 vs HTTP/3"],[["Read","HTTP and HTTPS (AlgoMaster)","https://algomaster.io/learn/system-design/http-https"],["Read","An overview of HTTP (MDN)","https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview"],["Watch","Search YouTube: ByteByteGo HTTP 1 2 3 explained","https://www.youtube.com/results?search_query=ByteByteGo+HTTP+1+2+3+explained"]],"d2"],["L","REST API design principles",["Resources and URL structure","Using HTTP verbs correctly","Pagination, filtering and sorting","Versioning and error responses","REST vs GraphQL vs gRPC"],[["Read","What is an API (AlgoMaster)","https://algomaster.io/learn/system-design/what-is-an-api"],["Read","REST vs GraphQL (AlgoMaster)","https://blog.algomaster.io/p/rest-vs-graphql"],["Read","REST, GraphQL, gRPC (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#rest-graphql-grpc"],["Watch","Search YouTube: ByteByteGo REST API design best practices","https://www.youtube.com/results?search_query=ByteByteGo+REST+API+design+best+practices"]],"d3"],["L","Load balancers (L4 vs L7, algorithms)",["Layer 4 vs layer 7 load balancing","Round robin, least connections, IP hash","Health checks and failover","Sticky sessions","Redundant load balancers"],[["Read","Load balancing algorithms, with code (AlgoMaster)","https://blog.algomaster.io/p/load-balancing-algorithms-explained-with-code"],["Read","Load balancer (System Design Primer)","https://github.com/donnemartin/system-design-primer#load-balancer"],["Watch","Search YouTube: ByteByteGo load balancing algorithms","https://www.youtube.com/results?search_query=ByteByteGo+load+balancing+algorithms"]],"d4"],["L","Horizontal vs vertical scaling",["Scaling up vs scaling out","Where vertical scaling hits limits","What makes horizontal scaling hard: state and data","Auto-scaling basics","Cost and complexity tradeoffs"],[["Read","Vertical vs horizontal scaling (AlgoMaster)","https://algomaster.io/learn/system-design/vertical-vs-horizontal-scaling"],["Read","Scalability (AlgoMaster)","https://algomaster.io/learn/system-design/scalability"],["Watch","Search YouTube: ByteByteGo vertical vs horizontal scaling","https://www.youtube.com/results?search_query=ByteByteGo+vertical+vs+horizontal+scaling"]],"d5"],["L","Stateless vs stateful services",["What state means in a service","Moving sessions to Redis or a database","Why sticky sessions cause trouble","Services that must stay stateful (databases, WebSockets)","The twelve-factor processes rule"],[["Read","Stateful vs stateless architecture (AlgoMaster)","https://blog.algomaster.io/p/stateful-vs-stateless-architecture"],["Read","Twelve-Factor App: processes","https://12factor.net/processes"],["Watch","Search YouTube: stateless vs stateful architecture system design","https://www.youtube.com/results?search_query=stateless+vs+stateful+architecture+system+design"]],"d6"],["R","Review and sketch the full request flow end to end",["Draw DNS → LB → app → cache → DB from memory","Mark where each hop could fail","Explain L4 vs L7 and stateless services out loud","Redo anything marked revise"],[["Read","30 system design concepts (AlgoMaster)","https://blog.algomaster.io/p/30-system-design-concepts"]],"d7"]]],[2,"hld","Databases and data modeling",[["L","SQL databases and ACID",["Tables, keys and joins","Atomicity, consistency, isolation, durability","How the write-ahead log gives durability","When ACID matters: payments, inventory"],[["Read","ACID transactions (AlgoMaster)","https://algomaster.io/learn/system-design/acid-transactions"],["Read","ACID and BASE (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#acid-and-base-consistency-models"],["Watch","Search YouTube: ByteByteGo ACID properties","https://www.youtube.com/results?search_query=ByteByteGo+ACID+properties"]],"d8"],["L","NoSQL types (key-value, document, column, graph)",["Key-value stores (Redis, DynamoDB)","Document stores (MongoDB)","Wide-column stores (Cassandra)","Graph databases (Neo4j)","BASE vs ACID"],[["Read","15 types of databases (AlgoMaster)","https://blog.algomaster.io/p/15-types-of-databases"],["Read","NoSQL (System Design Primer)","https://github.com/donnemartin/system-design-primer#nosql"],["Watch","Search YouTube: ByteByteGo types of databases","https://www.youtube.com/results?search_query=ByteByteGo+types+of+databases"]],"d9"],["L","SQL vs NoSQL: when to use which",["Schema flexibility vs structure","Joins and transactions vs scaling out","Let access patterns drive the choice","Using more than one database (polyglot persistence)"],[["Read","SQL vs NoSQL (AlgoMaster)","https://algomaster.io/learn/system-design/sql-vs-nosql"],["Read","SQL or NoSQL (System Design Primer)","https://github.com/donnemartin/system-design-primer#sql-or-nosql"],["Watch","Search YouTube: ByteByteGo SQL vs NoSQL","https://www.youtube.com/results?search_query=ByteByteGo+SQL+vs+NoSQL"]],"d10"],["L","Database indexing (how it works, tradeoffs)",["B-tree indexes","Hash indexes","Composite indexes and column order","Covering indexes","Why indexes slow down writes"],[["Read","Database indexes (AlgoMaster)","https://algomaster.io/learn/system-design/indexing"],["Read","Use The Index, Luke (SQL indexing guide)","https://use-the-index-luke.com/"],["Watch","Search YouTube: Hussein Nasser database indexing explained","https://www.youtube.com/results?search_query=Hussein+Nasser+database+indexing+explained"]],"d11"],["L","Normalization vs denormalization",["1NF, 2NF and 3NF in plain terms","Update anomalies","Denormalizing for read speed","Materialized views"],[["Read","Normalization and denormalization (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#normalization-and-denormalization"],["Read","Denormalization (System Design Primer)","https://github.com/donnemartin/system-design-primer#denormalization"],["Watch","Search YouTube: database normalization vs denormalization system design","https://www.youtube.com/results?search_query=database+normalization+vs+denormalization+system+design"]],"d12"],["L","Connection pooling",["Why opening a DB connection is expensive","Pool size and timeouts","Symptoms of pool exhaustion","External poolers like PgBouncer","Connection pools in serverless apps"],[["Read","PgBouncer (Postgres connection pooler)","https://www.pgbouncer.org/"],["Watch","Search YouTube: Hussein Nasser database connection pooling","https://www.youtube.com/results?search_query=Hussein+Nasser+database+connection+pooling"]],"d13"],["R","Review the week",["Pick SQL or NoSQL for three example apps and justify each","Explain an index to a non-engineer","Redo anything marked revise"],[["Read","How to scale a database (AlgoMaster)","https://blog.algomaster.io/p/system-design-how-to-scale-a-database"]],"d14"]]],[3,"hld","Scaling the data layer",[["L","Replication (leader-follower)",["Leader takes writes, followers serve reads","Synchronous vs asynchronous replication","Replication lag and read-your-writes","Failover: promoting a follower"],[["Read","Database replication (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#database-replication"],["Read","Master-slave replication (System Design Primer)","https://github.com/donnemartin/system-design-primer#master-slave-replication"],["Watch","Search YouTube: ByteByteGo database replication","https://www.youtube.com/results?search_query=ByteByteGo+database+replication"]],"d15"],["L","Multi-leader and leaderless replication",["Multi-leader across data centers","Write conflicts: last-write-wins, CRDTs","Leaderless quorums (N, R, W)","Read repair and hinted handoff","Dynamo-style systems"],[["Read","Master-master replication (System Design Primer)","https://github.com/donnemartin/system-design-primer#master-master-replication"],["Read","Amazon's Dynamo (Werner Vogels)","https://www.allthingsdistributed.com/2007/10/amazons_dynamo.html"],["Watch","Search YouTube: leaderless replication quorum explained","https://www.youtube.com/results?search_query=leaderless+replication+quorum+explained"]],"d16"],["L","Sharding and partitioning strategies",["Range, hash and directory-based sharding","Choosing a shard key","Hot spots and rebalancing","Cross-shard queries and joins"],[["Read","Database sharding (AlgoMaster)","https://algomaster.io/learn/system-design/sharding"],["Read","Sharding (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#sharding"],["Watch","Search YouTube: ByteByteGo database sharding","https://www.youtube.com/results?search_query=ByteByteGo+database+sharding"]],"d17"],["L","Consistent hashing",["Why modulo hashing breaks when you add servers","The hash ring","Virtual nodes","Where it's used: caches, Cassandra, DynamoDB"],[["Read","Consistent hashing (AlgoMaster)","https://algomaster.io/learn/system-design/consistent-hashing"],["Read","Consistent hashing (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#consistent-hashing"],["Watch","Search YouTube: ByteByteGo consistent hashing","https://www.youtube.com/results?search_query=ByteByteGo+consistent+hashing"]],"d18"],["L","Transactions and isolation levels",["Dirty reads, non-repeatable reads, phantoms","Read committed, repeatable read, serializable","MVCC","Two-phase commit and sagas"],[["Docs","Transaction isolation (PostgreSQL docs)","https://www.postgresql.org/docs/current/transaction-iso.html"],["Read","Distributed transactions (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#distributed-transactions"],["Watch","Search YouTube: Hussein Nasser transaction isolation levels","https://www.youtube.com/results?search_query=Hussein+Nasser+transaction+isolation+levels"]],"d19"],["L","Read-heavy vs write-heavy optimization",["Read replicas and caches for read-heavy loads","Batching, queues and LSM-tree stores for writes","The CQRS idea","Measuring your read/write ratio"],[["Read","How to scale a database (AlgoMaster)","https://blog.algomaster.io/p/system-design-how-to-scale-a-database"],["Read","CQRS (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#command-and-query-responsibility-segregation-cqrs"],["Watch","Search YouTube: system design read heavy vs write heavy","https://www.youtube.com/results?search_query=system+design+read+heavy+vs+write+heavy"]],"d20"],["R","Review the week",["Plan a data layer for 10x growth: replicas or shards?","Explain consistent hashing with a drawing","Redo anything marked revise"],[["Read","Top 15 system design tradeoffs (AlgoMaster)","https://blog.algomaster.io/p/system-design-top-15-trade-offs"]],"d21"]]],[4,"hld","Speed and decoupling",[["L","Caching fundamentals (Redis, Memcached)",["Cache hit, miss and hit ratio","Where caches live: client, CDN, server, database","Redis vs Memcached","TTLs"],[["Read","Caching 101 (AlgoMaster)","https://algomaster.io/learn/system-design/what-is-caching"],["Read","Cache (System Design Primer)","https://github.com/donnemartin/system-design-primer#cache"],["Watch","Search YouTube: ByteByteGo caching explained","https://www.youtube.com/results?search_query=ByteByteGo+caching+explained"]],"d22"],["L","Cache strategies (cache-aside, write-through, write-back)",["Cache-aside","Read-through","Write-through","Write-back (write-behind)","Refresh-ahead"],[["Read","Caching strategies (AlgoMaster)","https://algomaster.io/learn/system-design/caching-strategies"],["Read","Read-through vs write-through cache (AlgoMaster)","https://blog.algomaster.io/p/59cae60d-9717-4e20-a59e-759e370db4e5"],["Watch","Search YouTube: ByteByteGo cache strategies","https://www.youtube.com/results?search_query=ByteByteGo+cache+strategies"]],"d23"],["L","Cache invalidation and eviction (LRU, LFU)",["LRU, LFU and FIFO eviction","TTL-based expiry","Invalidating on writes","Cache stampede and how to prevent it","Distributed caching"],[["Read","7 cache eviction strategies (AlgoMaster)","https://blog.algomaster.io/p/7-cache-eviction-strategies"],["Read","Distributed caching (AlgoMaster)","https://blog.algomaster.io/p/distributed-caching"],["Watch","Search YouTube: cache stampede thundering herd explained","https://www.youtube.com/results?search_query=cache+stampede+thundering+herd+explained"]],"d24"],["L","CDNs",["Edge locations (points of presence)","Push vs pull CDNs","Cache-Control headers","Static vs dynamic content"],[["Read","Content delivery networks (AlgoMaster)","https://algomaster.io/learn/system-design/content-delivery-network-cdn"],["Read","What is a CDN? (Cloudflare)","https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"],["Watch","Design Content Delivery Network (CDN)","https://www.youtube.com/watch?v=8zX0rue2Hic"]],"d25"],["L","Message queues (Kafka, RabbitMQ, SQS)",["Producers, consumers and brokers","At-most-once, at-least-once, exactly-once","Kafka topics and partitions vs RabbitMQ queues","Dead-letter queues","Backpressure"],[["Read","Message queues (AlgoMaster)","https://algomaster.io/learn/system-design/message-queues"],["Docs","Introduction to Kafka","https://kafka.apache.org/intro"],["Watch","Search YouTube: ByteByteGo Kafka explained","https://www.youtube.com/results?search_query=ByteByteGo+Kafka+explained"]],"d26"],["L","Sync vs async, and pub/sub",["Request/response vs fire-and-forget","Pub/sub fan-out","Event-driven architecture","Webhooks"],[["Read","Synchronous vs asynchronous communication (AlgoMaster)","https://blog.algomaster.io/p/aec1cebf-6060-45a7-8e00-47364ca70761"],["Read","Pub/sub (AlgoMaster)","https://algomaster.io/learn/system-design/pub-sub"],["Read","Event-driven architecture (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#event-driven-architecture-eda"]],"d27"],["R","Review the week",["Add a cache and a queue to your week 1 diagram","Explain cache-aside vs write-through out loud","Redo anything marked revise"],[["Read","Push vs pull architecture (AlgoMaster)","https://blog.algomaster.io/p/af5fe2fe-9a4f-4708-af43-184945a243af"]],"d28"]]],[5,"hld","Distributed systems core",[["L","CAP theorem",["Consistency, availability, partition tolerance","Why a network partition forces a choice","CP vs AP system examples","Common misunderstandings"],[["Read","CAP theorem (AlgoMaster)","https://algomaster.io/learn/system-design/cap-theorem"],["Read","CAP theorem (System Design Primer)","https://github.com/donnemartin/system-design-primer#cap-theorem"],["Watch","Search YouTube: ByteByteGo CAP theorem","https://www.youtube.com/results?search_query=ByteByteGo+CAP+theorem"]],"d29"],["L","Consistency models (strong vs eventual)",["Strong (linearizable) consistency","Eventual consistency","Read-your-writes and monotonic reads","Choosing per feature: likes vs payments"],[["Read","Strong vs eventual consistency (AlgoMaster)","https://blog.algomaster.io/p/strong-vs-eventual-consistency"],["Read","Consistency models map (Jepsen)","https://jepsen.io/consistency"],["Watch","Search YouTube: strong vs eventual consistency system design","https://www.youtube.com/results?search_query=strong+vs+eventual+consistency+system+design"]],"d30"],["L","PACELC and latency tradeoffs",["PACELC: CAP plus the latency tradeoff","PA/EL vs PC/EC systems","Tunable consistency in Cassandra and DynamoDB"],[["Read","PACELC theorem (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#pacelc-theorem"],["Read","Latency vs throughput (AlgoMaster)","https://algomaster.io/learn/system-design/latency-vs-throughput"],["Watch","Search YouTube: PACELC theorem explained","https://www.youtube.com/results?search_query=PACELC+theorem+explained"]],"d31"],["L","Rate limiting (token bucket, leaky bucket)",["Token bucket","Leaky bucket","Fixed and sliding windows","Distributed rate limiting with Redis","Returning 429 with Retry-After"],[["Read","Rate limiting algorithms, with code (AlgoMaster)","https://blog.algomaster.io/p/rate-limiting-algorithms-explained-with-code"],["Read","Rate limiting (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#rate-limiting"],["Watch","Design Rate Limiter","https://www.youtube.com/watch?v=mhUQe4BKZXs"]],"d32"],["L","Idempotency",["What idempotent means","Idempotency keys","Safe retries with backoff","Deduplicating messages"],[["Read","Idempotency (AlgoMaster)","https://algomaster.io/learn/system-design/idempotency"],["Read","Designing robust APIs with idempotency (Stripe)","https://stripe.com/blog/idempotency"],["Watch","Search YouTube: idempotency in distributed systems","https://www.youtube.com/results?search_query=idempotency+in+distributed+systems"]],"d33"],["L","Consensus and leader election (Raft basics)",["Why consensus is hard","Raft: leader election and log replication","Quorums and majorities","Where it's used: etcd, ZooKeeper","Heartbeats"],[["Read","Raft consensus (with interactive visualization)","https://raft.github.io/"],["Read","Heartbeats in distributed systems (AlgoMaster)","https://blog.algomaster.io/p/heartbeats-in-distributed-systems"],["Watch","Search YouTube: Raft consensus algorithm explained","https://www.youtube.com/results?search_query=Raft+consensus+algorithm+explained"]],"d34"],["R","Review the week",["Explain CAP with a real example from memory","Pick strong or eventual consistency for five features","Redo anything marked revise"],[],"d35"]]],[6,"hld","Reliability and the framework",[["L","Availability, SLAs, redundancy, failover",["Nines of availability","SLA, SLO and SLI","Removing single points of failure","Active-passive vs active-active failover"],[["Read","Availability (AlgoMaster)","https://algomaster.io/learn/system-design/availability"],["Read","Single points of failure (AlgoMaster)","https://algomaster.io/learn/system-design/single-point-of-failure-spof"],["Read","SLA, SLO, SLI (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#sla-slo-sli"]],"d36"],["L","Fault tolerance and graceful degradation",["Retries with exponential backoff and jitter","Timeouts","Circuit breakers","Bulkheads","Degrading gracefully"],[["Read","Circuit breaker (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#circuit-breaker"],["Read","Reliability (AlgoMaster)","https://algomaster.io/learn/system-design/reliability"],["Watch","Search YouTube: ByteByteGo circuit breaker pattern","https://www.youtube.com/results?search_query=ByteByteGo+circuit+breaker+pattern"]],"d37"],["L","Back-of-envelope estimation (QPS, storage, bandwidth)",["Latency numbers every programmer should know","Powers of two","QPS from daily active users","Storage and bandwidth estimates"],[["Read","Back-of-the-envelope calculations (System Design Primer)","https://github.com/donnemartin/system-design-primer#back-of-the-envelope-calculations"],["Read","Latency numbers (System Design Primer)","https://github.com/donnemartin/system-design-primer#latency-numbers-every-programmer-should-know"],["Watch","Search YouTube: back of the envelope estimation system design interview","https://www.youtube.com/results?search_query=back+of+the+envelope+estimation+system+design+interview"]],"d38"],["L","The HLD interview framework (the 6 steps)",["Clarify functional and non-functional requirements","Estimate scale","Define APIs and the data model","Draw the high-level design","Deep-dive bottlenecks and tradeoffs"],[["Read","How to answer a system design question (AlgoMaster)","https://algomaster.io/learn/system-design-interviews/answering-framework"],["Read","How to approach a question (System Design Primer)","https://github.com/donnemartin/system-design-primer#how-to-approach-a-system-design-interview-question"],["Read","System design interviews (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#system-design-interviews"]],"d39"],["L","Monitoring, logging, observability basics",["Metrics, logs and traces","The four golden signals","Alerting on SLOs","Distributed tracing"],[["Read","Monitoring distributed systems (Google SRE book)","https://sre.google/sre-book/monitoring-distributed-systems/"],["Watch","Design an Analytics Platform (Metrics & Logging)","https://www.youtube.com/watch?v=kIcq1_pBQSY"]],"d40"],["L","Microservices vs monolith, API gateway",["Monolith, modular monolith, microservices","When microservices hurt","What an API gateway does","Service discovery","Backend for frontend"],[["Read","Monoliths and microservices (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#monoliths-and-microservices"],["Read","What is an API gateway (AlgoMaster)","https://blog.algomaster.io/p/what-is-an-api-gateway"],["Read","Microservices (Martin Fowler)","https://martinfowler.com/articles/microservices.html"]],"d41"],["R","Review the week",["Run the 6-step framework on a design you haven't seen","Time yourself: 35 minutes","Redo anything marked revise"],[],"d42"]]],[7,"hld","Practice I",[["P","URL shortener",["Requirements and scale estimates","Short code generation: base62, counters, hashing","Data model and storage choice","Redirect flow: 301 vs 302"],[["Read","Design a URL shortener (AlgoMaster)","https://algomaster.io/learn/system-design-interviews/design-url-shortener"],["Read","URL shortener (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#url-shortener"],["Read","Design Pastebin or Bit.ly (System Design Primer)","https://github.com/donnemartin/system-design-primer#design-pastebincom-or-bitly"]],"d43"],["P","URL shortener deep-dive (scaling and cache)",["Caching hot links","Avoiding key collisions at scale","Analytics without slowing redirects","Expiry and cleanup"],[["Read","Pastebin / Bit.ly worked solution (System Design Primer)","https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md"],["Watch","Search YouTube: ByteByteGo design a URL shortener","https://www.youtube.com/results?search_query=ByteByteGo+design+a+URL+shortener"]],"d44"],["P","Rate limiter (system-level)",["Where it sits: client, gateway or service","Picking an algorithm","Shared counters in Redis","Race conditions","Rule configuration and monitoring"],[["Watch","Design Rate Limiter","https://www.youtube.com/watch?v=mhUQe4BKZXs"],["Read","Rate limiting algorithms (AlgoMaster)","https://blog.algomaster.io/p/rate-limiting-algorithms-explained-with-code"]],"d45"],["P","Pastebin",["Storing text blobs in object storage","Metadata in a database","Expiry","Caching for a read-heavy load"],[["Read","Design Pastebin (System Design Primer)","https://github.com/donnemartin/system-design-primer#design-pastebincom-or-bitly"],["Read","Pastebin worked solution (System Design Primer)","https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md"]],"d46"],["P","Distributed key-value store",["Partitioning with consistent hashing","Replication and quorums","Conflict resolution and versioning","Gossip and failure detection"],[["Watch","Design Distributed Key-Value Store","https://www.youtube.com/watch?v=rnZmdmlR-2M"],["Read","Amazon's Dynamo (Werner Vogels)","https://www.allthingsdistributed.com/2007/10/amazons_dynamo.html"]],"d47"],["P","Unique ID generator",["UUIDs and their tradeoffs","Auto-increment and ticket servers","Snowflake-style IDs (timestamp, machine, sequence)","Clock skew"],[["Read","UUID (Wikipedia)","https://en.wikipedia.org/wiki/Universally_unique_identifier"],["Watch","Search YouTube: ByteByteGo design a unique ID generator distributed","https://www.youtube.com/results?search_query=ByteByteGo+design+a+unique+ID+generator+distributed"]],"d48"],["R","Review the week",["Redo one design from scratch without notes","Compare with your first attempt","Redo anything marked revise"],[],"d49"]]],[8,"hld","Practice II",[["P","Web crawler",["URL frontier and politeness","Deduplication with hashes and Bloom filters","robots.txt","Distributing the crawl"],[["Watch","Design Distributed Web Crawler","https://www.youtube.com/watch?v=BKZxZwUgL3Y"],["Read","Design a web crawler (System Design Primer)","https://github.com/donnemartin/system-design-primer#design-a-web-crawler"],["Read","Bloom filters (AlgoMaster)","https://algomaster.io/learn/system-design/bloom-filters"]],"d50"],["P","Notification system",["Channels: push, SMS, email","Per-channel queues and retries","User preferences and rate limits","Templates and delivery tracking"],[["Read","Design a notification service (AlgoMaster)","https://algomaster.io/learn/system-design-interviews/design-notification-service"],["Watch","Search YouTube: ByteByteGo design a notification system","https://www.youtube.com/results?search_query=ByteByteGo+design+a+notification+system"]],"d51"],["P","News feed",["Posting flow vs reading the feed","Feed storage","Ranking basics","Pagination"],[["Watch","Design Twitter","https://www.youtube.com/watch?v=wYk0xPP_P_8"],["Read","Twitter (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#twitter"],["Read","Twitter timeline and search (System Design Primer)","https://github.com/donnemartin/system-design-primer#design-the-twitter-timeline-and-search-or-facebook-feed-and-search"]],"d52"],["P","News feed deep-dive (fan-out on read vs write)",["Fan-out on write","Fan-out on read","Hybrid approach for celebrity accounts","Caching feeds"],[["Watch","Design Facebook","https://www.youtube.com/watch?v=9-hjBGxuiEs"],["Read","Twitter timeline worked solution (System Design Primer)","https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md"]],"d53"],["P","Chat system (WhatsApp)",["1:1 and group messaging","WebSockets vs long polling","Message storage","Delivering to offline users"],[["Read","Design WhatsApp (AlgoMaster)","https://algomaster.io/learn/system-design-interviews/design-whatsapp"],["Read","WhatsApp (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#whatsapp"],["Read","Long polling vs WebSockets (AlgoMaster)","https://blog.algomaster.io/p/long-polling-vs-websockets"]],"d54"],["P","Chat system deep-dive (presence, delivery, ordering)",["Presence with heartbeats","Delivery and read receipts","Message ordering and IDs","Multi-device sync"],[["Read","WebSockets (AlgoMaster)","https://blog.algomaster.io/p/websockets"],["Read","Heartbeats (AlgoMaster)","https://blog.algomaster.io/p/heartbeats-in-distributed-systems"],["Watch","Search YouTube: design WhatsApp chat system presence message ordering","https://www.youtube.com/results?search_query=design+WhatsApp+chat+system+presence+message+ordering"]],"d55"],["R","Review the week",["Explain fan-out on write vs read with a celebrity example","Redo anything marked revise"],[],"d56"]]],[9,"hld","Practice III",[["P","Search autocomplete (typeahead)",["Trie-based suggestions","Top-k results per prefix","Precomputing and caching","Refreshing with new query data"],[["Read","Trie (Wikipedia)","https://en.wikipedia.org/wiki/Trie"],["Watch","Search YouTube: ByteByteGo search autocomplete system design","https://www.youtube.com/results?search_query=ByteByteGo+search+autocomplete+system+design"]],"d57"],["P","Video streaming (YouTube, Netflix)",["Upload pipeline","Transcoding into multiple bitrates","Adaptive bitrate streaming (HLS, DASH)","Metadata and recommendations"],[["Watch","Design Youtube","https://www.youtube.com/watch?v=jPKTo1iGQiE"],["Read","Netflix (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#netflix"]],"d58"],["P","Video streaming deep-dive (encoding, CDN)",["Chunking and parallel encoding","Serving through CDNs","Storage cost tiers","Popular vs long-tail videos"],[["Watch","Design Netflix","https://www.youtube.com/watch?v=psQzyFfsUGU"],["Read","CDNs (AlgoMaster)","https://algomaster.io/learn/system-design/content-delivery-network-cdn"]],"d59"],["P","File storage and sync (Google Drive, Dropbox)",["Chunking files and deduplication","Metadata service","Sync and conflict handling","Object storage (S3)"],[["Watch","Design File Sharing System like Dropbox","https://www.youtube.com/watch?v=U0xTu6E2CT8"],["Watch","Design Distributed Cloud Storage like S3","https://www.youtube.com/watch?v=UmWtcgC96X8"]],"d60"],["P","Ride-hailing (Uber, Lyft)",["Rider and driver flows","Location updates at scale","Matching service","Trip state machine"],[["Watch","Design Uber","https://www.youtube.com/watch?v=umWABit-wbk"],["Read","Uber (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#uber"]],"d61"],["P","Ride-hailing deep-dive (geohashing, matching)",["Geohashing","Quadtrees","Finding nearby drivers quickly","Surge pricing basics"],[["Read","Geohashing and quadtrees (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#geohashing-and-quadtrees"],["Watch","Design Location Based Service like Yelp","https://www.youtube.com/watch?v=M4lR_Va97cQ"]],"d62"],["R","Review the week",["Pick your weakest design this month and redo it","Run a mock interview with a friend","Redo anything marked revise"],[],"d63"]]],[10,"lld","OOP and SOLID",[["L","OOP pillars: encapsulation and abstraction",["Classes and objects","Access modifiers","Hiding data behind methods","Abstract classes vs interfaces"],[["Read","Encapsulation (AlgoMaster)","https://algomaster.io/learn/lld/encapsulation"],["Read","Abstraction (AlgoMaster)","https://algomaster.io/learn/lld/abstraction"],["Watch","Search YouTube: Concept && Coding OOPs concepts low level design","https://www.youtube.com/results?search_query=Concept+%26%26+Coding+OOPs+concepts+low+level+design"]],"d64"],["L","OOP pillars: inheritance and polymorphism",["Is-a relationships","Overriding vs overloading","Runtime vs compile-time polymorphism","Problems with deep hierarchies"],[["Read","Inheritance (AlgoMaster)","https://algomaster.io/learn/lld/inheritance"],["Read","Polymorphism (AlgoMaster)","https://algomaster.io/learn/lld/polymorphism"]],"d65"],["L","Composition vs inheritance",["Has-a vs is-a","Association, aggregation, composition","Favoring composition","Delegation"],[["Read","Composition (AlgoMaster)","https://algomaster.io/learn/lld/composition"],["Read","Aggregation (AlgoMaster)","https://algomaster.io/learn/lld/aggregation"],["Read","Composition over inheritance (Wikipedia)","https://en.wikipedia.org/wiki/Composition_over_inheritance"]],"d66"],["L","SOLID: Single Responsibility and Open/Closed",["One reason to change","Spotting a class that does too much","Extending behavior without editing code","Using interfaces to extend"],[["Read","SOLID principles, with code (AlgoMaster)","https://blog.algomaster.io/p/solid-principles-explained-with-code"],["Read","SOLID (Wikipedia)","https://en.wikipedia.org/wiki/SOLID"],["Watch","Search YouTube: SOLID principles explained with examples","https://www.youtube.com/results?search_query=SOLID+principles+explained+with+examples"]],"d67"],["L","SOLID: Liskov Substitution and Interface Segregation",["Subtypes must keep the parent's promises","The square/rectangle problem","Splitting fat interfaces","Role interfaces"],[["Read","SOLID principles, with code (AlgoMaster)","https://blog.algomaster.io/p/solid-principles-explained-with-code"],["Read","Liskov substitution principle (Wikipedia)","https://en.wikipedia.org/wiki/Liskov_substitution_principle"]],"d68"],["L","SOLID: Dependency Inversion",["Depend on abstractions","Dependency injection","Inversion of control","Testing with mocks"],[["Read","Interfaces (AlgoMaster)","https://algomaster.io/learn/lld/interfaces"],["Read","Dependency inversion principle (Wikipedia)","https://en.wikipedia.org/wiki/Dependency_inversion_principle"]],"d69"],["R","Review the week",["Find SOLID violations in your own code at work","Refactor one class","Redo anything marked revise"],[["Read","How to learn LLD (AlgoMaster)","https://algomaster.io/learn/lld/how-to-learn-lld"]],"d70"]]],[11,"lld","Design patterns",[["L","UML: class and sequence diagrams",["Class diagram notation","Association, aggregation, composition, inheritance arrows","Sequence diagrams","When to sketch and when to skip"],[["Read","Class diagrams (AlgoMaster)","https://algomaster.io/learn/lld/class-diagram"],["Read","Sequence diagrams (AlgoMaster)","https://algomaster.io/learn/lld/sequence-diagram"]],"d71"],["L","Strategy pattern",["Intent: swap algorithms at runtime","Context plus strategy interface","Example: payment methods","Strategy vs long if-else chains"],[["Read","Strategy (Refactoring.Guru)","https://refactoring.guru/design-patterns/strategy"],["Read","Strategy (AlgoMaster)","https://algomaster.io/learn/lld/strategy"],["Watch","Search YouTube: Christopher Okhravi strategy pattern","https://www.youtube.com/results?search_query=Christopher+Okhravi+strategy+pattern"]],"d72"],["L","Observer pattern",["Subject and observers","Push vs pull updates","Example: notifications","Avoiding memory leaks from forgotten observers"],[["Read","Observer (Refactoring.Guru)","https://refactoring.guru/design-patterns/observer"],["Read","Observer (AlgoMaster)","https://algomaster.io/learn/lld/observer"],["Watch","Search YouTube: Christopher Okhravi observer pattern","https://www.youtube.com/results?search_query=Christopher+Okhravi+observer+pattern"]],"d73"],["L","Factory and Abstract Factory",["Simple factory vs factory method","Abstract factory for families of objects","Hiding concrete classes","When a plain constructor is enough"],[["Read","Factory Method (Refactoring.Guru)","https://refactoring.guru/design-patterns/factory-method"],["Read","Factory Method (AlgoMaster)","https://algomaster.io/learn/lld/factory-method"],["Read","Abstract Factory (AlgoMaster)","https://algomaster.io/learn/lld/abstract-factory"]],"d74"],["L","Singleton and Builder",["Singleton and thread safety","Why singletons hurt testing","Builder for objects with many optional fields","Fluent interfaces"],[["Read","Singleton (Refactoring.Guru)","https://refactoring.guru/design-patterns/singleton"],["Read","Builder (Refactoring.Guru)","https://refactoring.guru/design-patterns/builder"],["Read","Builder (AlgoMaster)","https://algomaster.io/learn/lld/builder"]],"d75"],["L","Decorator and Adapter",["Decorator: add behavior by wrapping","Adapter: make incompatible interfaces work together","Decorator vs inheritance","Real examples: I/O streams, middleware"],[["Read","Decorator (Refactoring.Guru)","https://refactoring.guru/design-patterns/decorator"],["Read","Adapter (Refactoring.Guru)","https://refactoring.guru/design-patterns/adapter"],["Read","Decorator (AlgoMaster)","https://algomaster.io/learn/lld/decorator"]],"d76"],["R","Review, plus an overview of Facade, Composite, State and Command",["Facade: one simple entry point","Composite: trees of objects","State: behavior that changes with state","Command: actions as objects (undo, queues)"],[["Read","Facade (AlgoMaster)","https://algomaster.io/learn/lld/facade"],["Read","Composite (AlgoMaster)","https://algomaster.io/learn/lld/composite"],["Read","State (AlgoMaster)","https://algomaster.io/learn/lld/state"],["Read","Command (AlgoMaster)","https://algomaster.io/learn/lld/command"]],"d77"]]],[12,"lld","LLD practice",[["P","Parking lot",["Entities: lot, level, spot, vehicle, ticket","Spot types and allocation strategy","Payment and pricing","Concurrency when two cars want one spot"],[["Read","Parking lot (awesome-low-level-design)","https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/parking-lot.md"],["Watch","Design Parking Garage","https://www.youtube.com/watch?v=NtMvNh0WFVM"],["Read","How to answer an LLD problem (AlgoMaster)","https://blog.algomaster.io/p/how-to-answer-a-lld-interview-problem"]],"d78"],["P","Elevator system",["Elevator, floor, request and controller classes","Scheduling strategy","State: moving up, down, idle","Handling many elevators"],[["Read","Elevator system (awesome-low-level-design)","https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/elevator-system.md"],["Read","State pattern (AlgoMaster)","https://algomaster.io/learn/lld/state"]],"d79"],["P","Vending machine",["States: idle, has money, dispensing","Inventory","Payment and change","Applying the State pattern"],[["Read","Vending machine (awesome-low-level-design)","https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/vending-machine.md"],["Watch","Design Vending Machine","https://www.youtube.com/watch?v=D0kDMUgo27c"]],"d80"],["P","BookMyShow or library management",["Entities: movie, show, screen, seat, booking","Seat locking during checkout","Payments and cancellations","Library version: books, members, loans, fines"],[["Read","Movie ticket booking (awesome-low-level-design)","https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/movie-ticket-booking-system.md"],["Read","Library management (awesome-low-level-design)","https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/library-management-system.md"],["Watch","Design Ticket Booking System like BookMyShow","https://www.youtube.com/watch?v=lBAwJgoO3Ek"]],"d81"],["P","Splitwise (expense sharing)",["Users, groups and expenses","Equal, exact and percentage splits","Balance tracking","Simplifying debts"],[["Read","Splitwise (awesome-low-level-design)","https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/splitwise.md"],["Watch","Search YouTube: Concept && Coding Splitwise low level design","https://www.youtube.com/results?search_query=Concept+%26%26+Coding+Splitwise+low+level+design"]],"d82"],["P","Tic-tac-toe or chess",["Board, player, piece and game classes","Move validation","Win detection","Extending to new rules"],[["Read","Tic-tac-toe (awesome-low-level-design)","https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/tic-tac-toe.md"],["Read","Chess (awesome-low-level-design)","https://github.com/ashishps1/awesome-low-level-design/blob/main/problems/chess-game.md"]],"d83"],["R","Review and consolidate everything",["Redo the parking lot in 45 minutes","List which patterns you used where","Redo anything marked revise"],[["Code","awesome-low-level-design (more problems)","https://github.com/ashishps1/awesome-low-level-design"]],"d84"]]],[13,"devops","Linux and networking",[["L","Linux basics: the filesystem, files and text tools",["Filesystem layout: /etc, /var, /home, /usr","Navigating, creating and editing files","Pipes and redirection","grep, find, less, tail -f"],[["Read","Linux Journey","https://linuxjourney.com/"],["Code","OverTheWire Bandit (practice game)","https://overthewire.org/wargames/bandit/"],["Watch","Search YouTube: freeCodeCamp Linux for beginners","https://www.youtube.com/results?search_query=freeCodeCamp+Linux+for+beginners"]],"o1"],["L","Users, permissions and processes",["Users and groups","chmod, chown and permission bits","sudo","ps, top, kill","systemd services and journalctl"],[["Read","Linux Journey","https://linuxjourney.com/"],["Watch","Search YouTube: Linux file permissions explained","https://www.youtube.com/results?search_query=Linux+file+permissions+explained"]],"o2"],["L","Shell scripting with Bash",["Variables and arguments","Conditionals and loops","Exit codes and set -e","Write a script that backs up a folder"],[["Docs","Bash reference manual (GNU)","https://www.gnu.org/software/bash/manual/"],["Watch","Search YouTube: bash scripting tutorial for beginners","https://www.youtube.com/results?search_query=bash+scripting+tutorial+for+beginners"]],"o3"],["L","Networking for DevOps: IPs, ports, DNS",["IP addresses, subnets and CIDR","Ports and common services","DNS records: A, CNAME, MX","Debugging with curl, ping, dig, ss"],[["Read","IP addresses (AlgoMaster)","https://algomaster.io/learn/system-design/ip-address"],["Read","TCP vs UDP (AlgoMaster)","https://algomaster.io/learn/system-design/tcp-vs-udp"],["Read","DNS (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#domain-name-system-dns"]],"o4"],["L","SSH, keys and working on remote servers",["SSH key pairs","The ~/.ssh/config file","Copying files with scp and rsync","Hardening: disable password login"],[["Watch","Search YouTube: SSH explained key based authentication tutorial","https://www.youtube.com/results?search_query=SSH+explained+key+based+authentication+tutorial"],["Read","Linux Journey","https://linuxjourney.com/"]],"o5"],["L","Git beyond the basics",["Branching strategies","Rebase vs merge","Pull requests and code review","Tags and releases"],[["Read","Pro Git book","https://git-scm.com/book/en/v2"],["Watch","Search YouTube: git rebase vs merge explained","https://www.youtube.com/results?search_query=git+rebase+vs+merge+explained"]],"o6"],["R","Review: set up a Linux VM, write a script, push it to GitHub",["Create a VM (local or cloud)","Write and run a Bash script on it","Push the script to a GitHub repo"],[["Code","DevOps exercises","https://github.com/bregman-arie/devops-exercises"]],"o7"]]],[14,"devops","Cloud fundamentals (AWS)",[["L","Cloud concepts and the AWS free tier",["IaaS, PaaS, SaaS","Regions and availability zones","The shared responsibility model","Free tier limits and billing alerts"],[["Read","AWS free tier","https://aws.amazon.com/free/"],["Watch","Search YouTube: freeCodeCamp AWS Certified Cloud Practitioner full course","https://www.youtube.com/results?search_query=freeCodeCamp+AWS+Certified+Cloud+Practitioner+full+course"]],"o8"],["L","IAM: users, roles and least privilege",["Users, groups and roles","Policies and least privilege","MFA and protecting the root account","Access keys and why to avoid them"],[["Docs","IAM security best practices (AWS docs)","https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"],["Watch","Search YouTube: AWS IAM tutorial roles policies","https://www.youtube.com/results?search_query=AWS+IAM+tutorial+roles+policies"]],"o9"],["L","EC2: virtual servers",["Instance types and AMIs","Security groups","Connecting with key pairs","User data scripts"],[["Docs","Amazon EC2 concepts (AWS docs)","https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html"],["Watch","Search YouTube: AWS EC2 tutorial for beginners","https://www.youtube.com/results?search_query=AWS+EC2+tutorial+for+beginners"]],"o10"],["L","VPC networking",["VPCs and subnets (public and private)","Route tables and internet gateways","NAT gateways","Security groups vs network ACLs"],[["Docs","What is Amazon VPC? (AWS docs)","https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html"],["Watch","Search YouTube: AWS VPC explained subnets route tables","https://www.youtube.com/results?search_query=AWS+VPC+explained+subnets+route+tables"]],"o11"],["L","Storage and databases: S3 and RDS",["S3 buckets, objects and storage classes","Bucket policies","RDS managed databases","Backups and snapshots"],[["Docs","What is Amazon S3? (AWS docs)","https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"],["Read","Storage (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#storage"]],"o12"],["L","Load balancing and auto scaling on AWS",["Application Load Balancer","Target groups and health checks","Auto Scaling groups","How this maps to week 1's load balancer topic"],[["Read","Load balancing algorithms (AlgoMaster)","https://blog.algomaster.io/p/load-balancing-algorithms-explained-with-code"],["Watch","Search YouTube: AWS application load balancer auto scaling group tutorial","https://www.youtube.com/results?search_query=AWS+application+load+balancer+auto+scaling+group+tutorial"]],"o13"],["R","Review: deploy your app by hand on EC2 with RDS",["Launch an EC2 instance","Create an RDS database","Deploy your app manually and note every painful step"],[],"o14"]]],[15,"devops","Docker",[["L","Containers vs virtual machines",["What a container is","Images vs containers","Namespaces and cgroups, at a high level","Why containers fix 'works on my machine'"],[["Docs","Docker get started","https://docs.docker.com/get-started/"],["Read","VMs and containers (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#virtual-machines-vms-and-containers"],["Watch","Search YouTube: TechWorld with Nana Docker tutorial for beginners","https://www.youtube.com/results?search_query=TechWorld+with+Nana+Docker+tutorial+for+beginners"]],"o15"],["L","Writing a Dockerfile",["FROM, RUN, COPY, CMD","Layers and build caching","The .dockerignore file","Choosing a small base image"],[["Docs","Building best practices (Docker docs)","https://docs.docker.com/build/building/best-practices/"],["Watch","Search YouTube: Dockerfile tutorial","https://www.youtube.com/results?search_query=Dockerfile+tutorial"]],"o16"],["L","Multi-stage builds and image size",["Separate build and runtime stages","Slim and distroless images","Scanning images for vulnerabilities","Tagging and versioning"],[["Docs","Building best practices (Docker docs)","https://docs.docker.com/build/building/best-practices/"],["Watch","Search YouTube: docker multi stage build tutorial","https://www.youtube.com/results?search_query=docker+multi+stage+build+tutorial"]],"o17"],["L","Volumes, networking and configuration",["Bind mounts vs volumes","Container networking","Port mapping","Environment variables and secrets"],[["Docs","Volumes (Docker docs)","https://docs.docker.com/engine/storage/volumes/"],["Watch","Search YouTube: docker volumes and networking explained","https://www.youtube.com/results?search_query=docker+volumes+and+networking+explained"]],"o18"],["L","Docker Compose",["Multi-service apps: app, database, Redis","Service dependencies","Compose for local development","Overrides for different environments"],[["Docs","Docker Compose (Docker docs)","https://docs.docker.com/compose/"],["Code","Awesome Compose (example apps)","https://github.com/docker/awesome-compose"]],"o19"],["L","Image registries",["Docker Hub, GitHub Container Registry, ECR","Pushing and pulling images","Tags vs digests"],[["Watch","Search YouTube: push docker image to GitHub container registry tutorial","https://www.youtube.com/results?search_query=push+docker+image+to+GitHub+container+registry+tutorial"],["Docs","Docker get started","https://docs.docker.com/get-started/"]],"o20"],["R","Review: run your whole app with one docker compose up",["Dockerfile for your backend","Compose file with app, database and Redis","Push the image to a registry"],[],"o21"]]],[16,"devops","CI/CD",[["L","CI/CD concepts",["Continuous integration","Continuous delivery vs continuous deployment","Pipeline stages","Trunk-based development"],[["Docs","GitHub Actions documentation","https://docs.github.com/en/actions"],["Watch","Search YouTube: TechWorld with Nana CI CD explained","https://www.youtube.com/results?search_query=TechWorld+with+Nana+CI+CD+explained"]],"o22"],["L","GitHub Actions basics",["Workflows, jobs and steps","Triggers: push and pull_request","Runners","Reusing marketplace actions"],[["Docs","GitHub Actions documentation","https://docs.github.com/en/actions"],["Watch","Search YouTube: GitHub Actions tutorial for beginners","https://www.youtube.com/results?search_query=GitHub+Actions+tutorial+for+beginners"]],"o23"],["L","Tests and linting in CI",["Running tests on every pull request","Caching dependencies","Matrix builds","Required status checks"],[["Docs","GitHub Actions documentation","https://docs.github.com/en/actions"]],"o24"],["L","Building and pushing images in CI",["Docker builds inside a workflow","Pushing to a registry","Tagging images with the commit SHA","Secrets in GitHub Actions"],[["Watch","Search YouTube: GitHub Actions build and push docker image","https://www.youtube.com/results?search_query=GitHub+Actions+build+and+push+docker+image"]],"o25"],["L","Deploying from CI",["Deploying to a server or cloud service","Environments and manual approvals","Rollbacks","Blue-green and canary deployments"],[["Watch","Search YouTube: blue green vs canary deployment explained","https://www.youtube.com/results?search_query=blue+green+vs+canary+deployment+explained"],["Docs","GitHub Actions documentation","https://docs.github.com/en/actions"]],"o26"],["L","Secrets and security in pipelines",["Never commit secrets","OIDC instead of long-lived cloud keys","Dependency scanning","Least-privilege tokens"],[["Docs","GitHub Actions documentation","https://docs.github.com/en/actions"],["Watch","Search YouTube: GitHub Actions OIDC AWS tutorial","https://www.youtube.com/results?search_query=GitHub+Actions+OIDC+AWS+tutorial"]],"o27"],["R","Review: auto-deploy your app on every push to main",["Test, build, push, deploy in one workflow","Break a test on purpose and watch the pipeline stop"],[],"o28"]]],[17,"devops","Infrastructure as code (Terraform)",[["L","Infrastructure as code concepts",["Declarative vs imperative","Why clicking in the console doesn't scale","Terraform vs CloudFormation vs Pulumi","Repeatable, reviewable infrastructure"],[["Docs","Terraform: get started with AWS","https://developer.hashicorp.com/terraform/tutorials/aws-get-started"],["Watch","Search YouTube: TechWorld with Nana Terraform explained","https://www.youtube.com/results?search_query=TechWorld+with+Nana+Terraform+explained"]],"o29"],["L","Terraform basics",["Providers and resources","init, plan, apply, destroy","Variables and outputs","Reading a plan carefully"],[["Docs","Terraform: get started with AWS","https://developer.hashicorp.com/terraform/tutorials/aws-get-started"]],"o30"],["L","Terraform state",["What state stores","Remote state in S3 with locking","Drift","Why you never edit state by hand"],[["Docs","State (Terraform docs)","https://developer.hashicorp.com/terraform/language/state"]],"o31"],["L","Terraform modules",["Writing a module","Inputs and outputs","Using community modules","Folder structure"],[["Docs","Modules (Terraform docs)","https://developer.hashicorp.com/terraform/language/modules"]],"o32"],["L","Managing environments",["Dev, staging and production","Workspaces vs separate folders","tfvars files"],[["Watch","Search YouTube: terraform environments dev staging prod best practices","https://www.youtube.com/results?search_query=terraform+environments+dev+staging+prod+best+practices"]],"o33"],["L","Terraform in CI",["Run plan on pull requests","Apply on merge","Policy checks","Reviewing plans as a team"],[["Docs","GitHub Actions documentation","https://docs.github.com/en/actions"],["Watch","Search YouTube: terraform github actions pipeline","https://www.youtube.com/results?search_query=terraform+github+actions+pipeline"]],"o34"],["R","Review: rebuild your week 2 AWS setup in Terraform",["VPC, EC2 and RDS as code","Destroy and recreate it in one command"],[],"o35"]]],[18,"devops","Kubernetes I",[["L","Why Kubernetes, and how a cluster is built",["What Docker alone doesn't solve","Control plane and worker nodes","kubectl basics","Local clusters with kind or minikube"],[["Docs","Kubernetes basics tutorial","https://kubernetes.io/docs/tutorials/kubernetes-basics/"],["Docs","kind (local Kubernetes)","https://kind.sigs.k8s.io/"],["Watch","Search YouTube: TechWorld with Nana Kubernetes tutorial for beginners","https://www.youtube.com/results?search_query=TechWorld+with+Nana+Kubernetes+tutorial+for+beginners"]],"o36"],["L","Pods and Deployments",["Pods","ReplicaSets","Deployments and rolling updates","Rollbacks"],[["Docs","Pods (Kubernetes docs)","https://kubernetes.io/docs/concepts/workloads/pods/"],["Docs","Deployments (Kubernetes docs)","https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"]],"o37"],["L","Services and networking",["ClusterIP, NodePort, LoadBalancer","DNS inside the cluster","Ingress"],[["Docs","Services (Kubernetes docs)","https://kubernetes.io/docs/concepts/services-networking/service/"]],"o38"],["L","ConfigMaps and Secrets",["ConfigMaps","Secrets and their limits","Environment variables vs mounted files"],[["Docs","ConfigMaps (Kubernetes docs)","https://kubernetes.io/docs/concepts/configuration/configmap/"]],"o39"],["L","Storage in Kubernetes",["Volumes","PersistentVolumes and claims","StatefulSets for databases"],[["Docs","Persistent volumes (Kubernetes docs)","https://kubernetes.io/docs/concepts/storage/persistent-volumes/"]],"o40"],["L","Health checks and scaling",["Liveness and readiness probes","Resource requests and limits","Horizontal Pod Autoscaler"],[["Docs","Liveness, readiness and startup probes (Kubernetes docs)","https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"]],"o41"],["R","Review: deploy your app to a local kind cluster",["Deployment, Service and ConfigMap for your app","Scale it to three replicas","Kill a pod and watch it come back"],[],"o42"]]],[19,"devops","Kubernetes in practice and observability",[["L","Helm charts",["Charts and values files","Installing community charts","Writing a simple chart for your app"],[["Docs","Helm documentation","https://helm.sh/docs/"],["Watch","Search YouTube: Helm tutorial for beginners","https://www.youtube.com/results?search_query=Helm+tutorial+for+beginners"]],"o43"],["L","Managed Kubernetes (EKS) and when not to use Kubernetes",["Managed vs self-hosted clusters","Node groups","Watching the cost","When Kubernetes is overkill"],[["Watch","Search YouTube: AWS EKS tutorial for beginners","https://www.youtube.com/results?search_query=AWS+EKS+tutorial+for+beginners"],["Watch","Search YouTube: do you really need Kubernetes","https://www.youtube.com/results?search_query=do+you+really+need+Kubernetes"]],"o44"],["L","Metrics with Prometheus and Grafana",["Prometheus' pull model","Exporters","PromQL basics","Grafana dashboards"],[["Docs","Prometheus overview","https://prometheus.io/docs/introduction/overview/"],["Docs","Grafana documentation","https://grafana.com/docs/grafana/latest/"]],"o45"],["L","Logs and traces",["Centralized logging","Structured logs","Distributed tracing","OpenTelemetry"],[["Docs","OpenTelemetry documentation","https://opentelemetry.io/docs/"],["Read","Monitoring distributed systems (Google SRE book)","https://sre.google/sre-book/monitoring-distributed-systems/"]],"o46"],["L","Reliability practices: SLOs, alerts and incidents",["SLOs and error budgets","Alerts that aren't noise","Incident response","Blameless postmortems"],[["Read","Site Reliability Engineering (Google, free book)","https://sre.google/sre-book/table-of-contents/"],["Read","SLA, SLO, SLI (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#sla-slo-sli"]],"o47"],["L","GitOps",["Git as the source of truth","Argo CD and Flux","Pull-based deployments"],[["Docs","Argo CD documentation","https://argo-cd.readthedocs.io/"],["Watch","Search YouTube: GitOps Argo CD tutorial","https://www.youtube.com/results?search_query=GitOps+Argo+CD+tutorial"]],"o48"],["R","Review: put it all together",["Docker, CI/CD, Terraform and Kubernetes for one app","Add a Grafana dashboard","Write a one-page runbook"],[["Code","90DaysOfDevOps","https://github.com/MichaelCade/90DaysOfDevOps"],["Read","DevOps roadmap (roadmap.sh)","https://roadmap.sh/devops"]],"o49"]]],[20,"ai","LLM foundations",[["L","How LLMs work: tokens, context window, temperature, sampling",["Tokens and tokenization","Context window","Next-token prediction","Temperature and top-p sampling"],[["Watch","Search YouTube: Andrej Karpathy Intro to Large Language Models","https://www.youtube.com/results?search_query=Andrej+Karpathy+Intro+to+Large+Language+Models"],["Read","The Illustrated Transformer (Jay Alammar)","https://jalammar.github.io/illustrated-transformer/"],["Docs","Models overview (Claude docs)","https://platform.claude.com/docs/en/about-claude/models/overview"]],"d85"],["L","Pretraining vs fine-tuning vs RLHF, and why models behave as they do",["Pretraining on large text corpora","Supervised fine-tuning","RLHF and reward models","DPO and newer methods","Where sycophancy and overconfidence come from"],[["Read","Illustrating RLHF (Hugging Face)","https://huggingface.co/blog/rlhf"],["Code","Neural Networks: Zero to Hero (Karpathy)","https://github.com/karpathy/nn-zero-to-hero"],["Watch","Search YouTube: Andrej Karpathy State of GPT","https://www.youtube.com/results?search_query=Andrej+Karpathy+State+of+GPT"]],"d86"],["L","Calling an LLM API: messages, system prompts, parameters",["Messages: system, user, assistant","Model, max tokens, temperature","Reading responses and stop reasons","Keeping API keys on the server"],[["Code","Claude cookbooks","https://github.com/anthropics/claude-cookbooks"],["Code","Anthropic courses","https://github.com/anthropics/courses"]],"d87"],["L","Streaming responses into a web UI",["Server-sent events","Streaming tokens to the browser","Partial output and cancellation","Streaming with tool calls"],[["Docs","Streaming messages (Claude docs)","https://platform.claude.com/docs/en/api/streaming"],["Docs","Server-sent events (MDN)","https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events"],["Read","Long polling, WebSockets, SSE (Karan Pratap Singh's course)","https://github.com/karanpratapsingh/system-design#long-polling-websockets-server-sent-events-sse"]],"d88"],["L","Structured outputs (JSON) and validating model responses",["Asking for JSON","Schema-constrained output","Validating with Zod or Pydantic","Retrying on invalid output"],[["Docs","Structured outputs (Claude docs)","https://platform.claude.com/docs/en/build-with-claude/structured-outputs"],["Watch","Search YouTube: LLM structured output JSON schema validation tutorial","https://www.youtube.com/results?search_query=LLM+structured+output+JSON+schema+validation+tutorial"]],"d89"],["L","Cost, rate limits and latency: tokens, caching, choosing a model",["Input vs output tokens","Prompt caching","Rate limits and retries","Smaller vs larger models"],[["Docs","Prompt caching (Claude docs)","https://platform.claude.com/docs/en/build-with-claude/prompt-caching"],["Docs","Models overview (Claude docs)","https://platform.claude.com/docs/en/about-claude/models/overview"]],"d90"],["R","Review, and build a simple chat endpoint in your own stack",["Backend route that calls the API","Stream the reply to a React page","Log token usage per request"],[["Code","Claude cookbooks","https://github.com/anthropics/claude-cookbooks"]],"d91"]]],[21,"ai","Prompting and tool use",[["L","Prompt engineering basics: clear instructions, examples, roles",["Be clear and direct","Give examples (few-shot)","System prompts and roles","Prompt templates"],[["Docs","Prompt engineering overview (Claude docs)","https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview"],["Code","Prompt engineering interactive tutorial (Anthropic)","https://github.com/anthropics/prompt-eng-interactive-tutorial"]],"d92"],["L","Advanced prompting: step-by-step reasoning, XML tags, templates",["Asking the model to reason step by step","XML tags to structure prompts","Chaining prompts","Long-context tips"],[["Code","Prompt engineering interactive tutorial (Anthropic)","https://github.com/anthropics/prompt-eng-interactive-tutorial"],["Code","Anthropic courses","https://github.com/anthropics/courses"]],"d93"],["L","Tool and function calling: letting the model call your APIs",["Defining tools with JSON Schema","The tool-use loop","Parallel tool calls","Errors inside tools"],[["Docs","Tool use (Claude docs)","https://platform.claude.com/docs/en/tool-use"],["Code","Tool use course (Anthropic)","https://github.com/anthropics/courses/tree/master/tool_use"]],"d94"],["L","Model Context Protocol (MCP): connecting models to tools and data",["Hosts, clients and servers","Tools, resources and prompts","Local vs remote servers","Building a small MCP server"],[["Docs","Model Context Protocol","https://modelcontextprotocol.io/"],["Code","MCP specification and docs","https://github.com/modelcontextprotocol/modelcontextprotocol"]],"d95"],["L","Handling failures: hallucinations, retries, fallbacks, timeouts",["Hallucinations and grounding in sources","Retries with backoff","Fallback models","Timeouts and partial results"],[["Watch","Search YouTube: reducing LLM hallucinations grounding RAG","https://www.youtube.com/results?search_query=reducing+LLM+hallucinations+grounding+RAG"],["Code","Anthropic courses","https://github.com/anthropics/courses"]],"d96"],["L","Guardrails and safety: input validation, prompt injection, PII",["Validating inputs","How prompt injection happens","Handling personal data","Filtering outputs"],[["Read","OWASP Top 10 for LLM applications","https://owasp.org/www-project-top-10-for-large-language-model-applications/"],["Watch","Search YouTube: prompt injection explained","https://www.youtube.com/results?search_query=prompt+injection+explained"]],"d97"],["R","Review, and build an assistant that calls one of your own APIs",["Define two tools","Run the tool-use loop","Handle a tool error gracefully"],[["Docs","Tool use (Claude docs)","https://platform.claude.com/docs/en/tool-use"]],"d98"]]],[22,"ai","Embeddings and RAG",[["L","Embeddings: turning text into vectors",["What an embedding vector is","Embedding models","Dimensions and normalization","Search vs clustering uses"],[["Docs","Sentence Transformers","https://www.sbert.net/"],["Watch","Search YouTube: embeddings explained for developers","https://www.youtube.com/results?search_query=embeddings+explained+for+developers"]],"d99"],["L","Semantic search and cosine similarity vs keyword search",["Cosine similarity and dot product","Keyword search with BM25","Where semantic search wins and fails","A first look at hybrid search"],[["Read","Cosine similarity (Wikipedia)","https://en.wikipedia.org/wiki/Cosine_similarity"],["Read","Okapi BM25 (Wikipedia)","https://en.wikipedia.org/wiki/Okapi_BM25"]],"d100"],["L","Vector databases: pgvector vs Pinecone",["Approximate nearest neighbor search","HNSW and IVF indexes","pgvector inside Postgres","Managed vector databases and tradeoffs"],[["Code","pgvector","https://github.com/pgvector/pgvector"],["Watch","Search YouTube: vector database explained HNSW","https://www.youtube.com/results?search_query=vector+database+explained+HNSW"]],"d101"],["L","Chunking strategies for documents",["Fixed-size vs semantic chunks","Overlap","Keeping metadata with each chunk","Chunk size vs retrieval quality"],[["Watch","Search YouTube: RAG chunking strategies","https://www.youtube.com/results?search_query=RAG+chunking+strategies"],["Code","Claude cookbooks (RAG examples)","https://github.com/anthropics/claude-cookbooks"]],"d102"],["L","The RAG pipeline end to end (ingest, embed, retrieve, generate)",["Ingest and clean documents","Embed and index","Retrieve the top-k chunks","Generate an answer with citations"],[["Code","LlamaIndex","https://github.com/run-llama/llama_index"],["Watch","Search YouTube: RAG from scratch tutorial","https://www.youtube.com/results?search_query=RAG+from+scratch+tutorial"]],"d103"],["L","Better retrieval: hybrid search, re-ranking, metadata filters",["Hybrid search","Re-ranking","Metadata filters","Query rewriting"],[["Watch","Search YouTube: hybrid search reranking RAG","https://www.youtube.com/results?search_query=hybrid+search+reranking+RAG"],["Code","OpenAI cookbook (retrieval examples)","https://github.com/openai/openai-cookbook"]],"d104"],["R","Review, and build RAG over your own documents",["Index ten of your own docs","Ask five questions and check citations","Note where retrieval failed"],[["Code","pgvector","https://github.com/pgvector/pgvector"]],"d105"]]],[23,"ai","Agents, evals and production",[["L","Agents: the plan, act, observe loop, and when you don't need one",["The agent loop","Workflows vs agents","When a simple chain is enough","Common agent failure modes"],[["Code","Agent patterns (Claude cookbooks)","https://github.com/anthropics/claude-cookbooks/tree/main/patterns/agents"],["Read","Effective context engineering for AI agents (Anthropic)","https://anthropic.com/engineering/effective-context-engineering-for-ai-agents"],["Read","LLM-powered autonomous agents (Lilian Weng)","https://lilianweng.github.io/posts/2023-06-23-agent/"]],"d106"],["L","Orchestration frameworks (LangChain, LangGraph, LlamaIndex) vs plain code",["What LangChain and LangGraph give you","LlamaIndex for data-heavy apps","The plain-code alternative","Avoiding lock-in"],[["Code","LangGraph","https://github.com/langchain-ai/langgraph"],["Code","LlamaIndex","https://github.com/run-llama/llama_index"]],"d107"],["L","Evals: measuring quality with test sets and LLM-as-judge",["Building a test set","Exact-match and rubric scoring","LLM-as-judge and its biases","Regression-testing prompts"],[["Code","Ragas (RAG evaluation)","https://github.com/vibrantlabsai/ragas"],["Watch","Search YouTube: LLM evals tutorial LLM as judge","https://www.youtube.com/results?search_query=LLM+evals+tutorial+LLM+as+judge"]],"d108"],["L","Observability for LLM apps: logging prompts, tracing, cost tracking",["Logging prompts and responses","Tracing multi-step calls","Tracking tokens and cost","Privacy when logging"],[["Watch","Search YouTube: LLM observability tracing tutorial","https://www.youtube.com/results?search_query=LLM+observability+tracing+tutorial"],["Read","Monitoring distributed systems (Google SRE book)","https://sre.google/sre-book/monitoring-distributed-systems/"]],"d109"],["L","Fine-tuning vs RAG vs prompting: when to use which",["What each one changes","Cost and effort","Knowledge vs behavior","A decision checklist"],[["Code","LLM course (Maxime Labonne)","https://github.com/mlabonne/llm-course"],["Watch","Search YouTube: fine tuning vs RAG vs prompt engineering","https://www.youtube.com/results?search_query=fine+tuning+vs+RAG+vs+prompt+engineering"]],"d110"],["L","Designing an LLM system at scale (queues, caching, rate limits)",["Queueing long-running requests","Caching prompts and responses","Per-user rate limits","Fallbacks across providers"],[["Docs","Prompt caching (Claude docs)","https://platform.claude.com/docs/en/build-with-claude/prompt-caching"],["Read","Message queues (AlgoMaster)","https://algomaster.io/learn/system-design/message-queues"],["Read","Rate limiting algorithms (AlgoMaster)","https://blog.algomaster.io/p/rate-limiting-algorithms-explained-with-code"]],"d111"],["R","Review the week",["Write five eval cases for your RAG project","Sketch the HLD for an LLM feature at 1M users","Redo anything marked revise"],[],"d112"]]],[24,"ai","Capstone: an AI-powered app",[["B","Define the problem, then write the HLD and LLD for a RAG assistant",["Pick a real problem and a target user","HLD diagram","Core classes and interfaces","Success criteria"],[["Read","System design framework (AlgoMaster)","https://algomaster.io/learn/system-design-interviews/answering-framework"]],"d113"],["B","Ingestion pipeline and vector store",["Document loaders","Chunk, embed, store","Re-ingesting changed documents"],[["Code","pgvector","https://github.com/pgvector/pgvector"]],"d114"],["B","Retrieval and generation with source citations",["Retrieve top-k","Prompt with retrieved context","Return citations with answers"],[["Code","Claude cookbooks","https://github.com/anthropics/claude-cookbooks"]],"d115"],["B","Web UI with streaming",["Chat interface","Streaming responses","Showing sources"],[["Docs","Streaming messages (Claude docs)","https://platform.claude.com/docs/en/api/streaming"]],"d116"],["B","Evals and guardrails",["Test set of 20 questions","Automated scoring","Input checks and prompt-injection defenses"],[["Code","Ragas (RAG evaluation)","https://github.com/vibrantlabsai/ragas"]],"d117"],["B","Deploy with Docker and CI/CD, and write the README",["Dockerfile","GitHub Actions pipeline","README with architecture diagram"],[["Watch","Search YouTube: deploy Docker app with GitHub Actions CI CD tutorial","https://www.youtube.com/results?search_query=deploy+Docker+app+with+GitHub+Actions+CI+CD+tutorial"]],"d118"],["R","Demo it end to end and write up what you learned",["Record a 3-minute demo","Write a short blog post","Add it to your resume and LinkedIn"],[],"d119"]]]],"dsa":[[1,"dsa","Arrays and hashing",[["P","Big-O and complexity analysis",["Time vs space complexity","Common classes: O(1) to O(2^n)","Analyzing loops and recursion","Amortized analysis"],[["Read","Algorithmic complexity (AlgoMaster)","https://algomaster.io/learn/dsa/big-o-introduction"],["Read","Big-O cheat sheet","https://www.bigocheatsheet.com/"],["Watch","Search YouTube: NeetCode big O notation","https://www.youtube.com/results?search_query=NeetCode+big+O+notation"]],[]],["P","Arrays and hash sets",["Array indexing and dynamic resizing","Hash set lookups in O(1)","Sorting as a tool"],[["Read","Arrays (AlgoMaster)","https://algomaster.io/learn/dsa/arrays-introduction"],["Read","Hash tables (AlgoMaster)","https://algomaster.io/learn/dsa/hash-tables-introduction"]],[["contains-duplicate","Contains Duplicate"],["valid-anagram","Valid Anagram"]]],["P","Hash maps",["Value → index maps","Grouping with a canonical key","Tradeoff: memory for speed"],[["Read","Hash tables (AlgoMaster)","https://algomaster.io/learn/dsa/hash-tables-introduction"]],[["two-sum","Two Sum"],["group-anagrams","Group Anagrams"]]],["P","Counting and bucket sort",["Frequency maps","Bucket sort by frequency","Top-k with counting"],[["Read","Top K elements pattern (AlgoMaster)","https://algomaster.io/learn/dsa/top-k-elements-introduction"]],[["top-k-frequent-elements","Top K Frequent Elements"],["majority-element","Majority Element"]]],["P","Prefix sums",["Running totals","Prefix and suffix products","Subarray sums with a hash map"],[["Read","Prefix sum pattern (AlgoMaster)","https://algomaster.io/learn/dsa/prefix-sum-introduction"]],[["product-of-array-except-self","Product of Array Except Self"],["subarray-sum-equals-k","Subarray Sum Equals K"]]],["P","Hashing patterns",["Validating with sets per row/column/box","Finding sequence starts","O(n) instead of sorting"],[["Read","20 DSA patterns (AlgoMaster)","https://blog.algomaster.io/p/20-dsa-patterns"]],[["valid-sudoku","Valid Sudoku"],["longest-consecutive-sequence","Longest Consecutive Sequence"]]],["R","Review the week",["Redo two problems without notes","Say the time and space complexity out loud"],[],[]]]],[2,"dsa","Two pointers and sliding window",[["P","Two pointers basics",["Pointers from both ends","Skipping non-alphanumeric characters","Sorted input makes two pointers work"],[["Read","Two pointers pattern (AlgoMaster)","https://algomaster.io/learn/dsa/two-pointers-introduction"]],[["valid-palindrome","Valid Palindrome"],["two-sum-ii-input-array-is-sorted","Two Sum II"]]],["P","Two pointers on sorted arrays",["Fix one, two-pointer the rest","Skipping duplicates","Greedy pointer movement"],[["Read","Two pointers pattern (AlgoMaster)","https://algomaster.io/learn/dsa/two-pointers-introduction"]],[["3sum","3Sum"],["container-with-most-water","Container With Most Water"]]],["P","Two pointers, hard",["Left max and right max","Moving the smaller side"],[["Read","Two pointers pattern (AlgoMaster)","https://algomaster.io/learn/dsa/two-pointers-introduction"]],[["trapping-rain-water","Trapping Rain Water"]]],["P","Sliding window basics",["Fixed vs variable windows","Expand right, shrink left","Tracking the best answer"],[["Read","Sliding window pattern (AlgoMaster)","https://algomaster.io/learn/dsa/sliding-window-introduction"]],[["best-time-to-buy-and-sell-stock","Best Time to Buy and Sell Stock"],["longest-substring-without-repeating-characters","Longest Substring Without Repeating Characters"]]],["P","Sliding window with counts",["Character counts in a window","Window validity checks","Comparing count arrays"],[["Read","Sliding window pattern (AlgoMaster)","https://algomaster.io/learn/dsa/sliding-window-introduction"]],[["longest-repeating-character-replacement","Longest Repeating Character Replacement"],["permutation-in-string","Permutation in String"]]],["P","Sliding window, hard",["Need/have counters","Monotonic deque for window max"],[["Read","Sliding window pattern (AlgoMaster)","https://algomaster.io/learn/dsa/sliding-window-introduction"]],[["minimum-window-substring","Minimum Window Substring"],["sliding-window-maximum","Sliding Window Maximum"]]],["R","Review the week",["Write the sliding window template from memory","Redo one hard problem"],[],[]]]],[3,"dsa","Stack and binary search",[["P","Stack basics",["LIFO operations","Matching pairs","Tracking a running minimum"],[["Read","Stacks (AlgoMaster)","https://algomaster.io/learn/dsa/stack-introduction"]],[["valid-parentheses","Valid Parentheses"],["min-stack","Min Stack"]]],["P","Stack applications",["Expression evaluation","Building strings with a stack"],[["Read","Stacks (AlgoMaster)","https://algomaster.io/learn/dsa/stack-introduction"]],[["evaluate-reverse-polish-notation","Evaluate Reverse Polish Notation"],["generate-parentheses","Generate Parentheses"]]],["P","Monotonic stack",["Next greater element","Increasing vs decreasing stacks","Widths from stack indexes"],[["Read","Monotonic stack pattern (AlgoMaster)","https://algomaster.io/learn/dsa/monotonic-stack-introduction"]],[["daily-temperatures","Daily Temperatures"],["car-fleet","Car Fleet"],["largest-rectangle-in-histogram","Largest Rectangle in Histogram"]]],["P","Binary search basics",["Loop invariants and off-by-one errors","Searching a 2D matrix as 1D"],[["Read","Binary search (AlgoMaster)","https://algomaster.io/learn/dsa/binary-search-introduction"]],[["binary-search","Binary Search"],["search-a-2d-matrix","Search a 2D Matrix"]]],["P","Binary search on the answer",["Searching over a range of answers","Rotated arrays"],[["Read","Binary search (AlgoMaster)","https://algomaster.io/learn/dsa/binary-search-introduction"]],[["koko-eating-bananas","Koko Eating Bananas"],["find-minimum-in-rotated-sorted-array","Find Minimum in Rotated Sorted Array"]]],["P","Binary search variants",["Which half is sorted?","Searching timestamps","Partitioning two arrays"],[["Read","Binary search (AlgoMaster)","https://algomaster.io/learn/dsa/binary-search-introduction"]],[["search-in-rotated-sorted-array","Search in Rotated Sorted Array"],["time-based-key-value-store","Time Based Key-Value Store"],["median-of-two-sorted-arrays","Median of Two Sorted Arrays"]]],["R","Review the week",["Write binary search bug-free from memory","Redo one monotonic stack problem"],[],[]]]],[4,"dsa","Linked lists",[["P","Linked list basics and reversal",["Nodes and pointers","Iterative reversal","Dummy head nodes"],[["Read","Linked lists (AlgoMaster)","https://algomaster.io/learn/dsa/linked-list-introduction"],["Read","In-place reversal pattern (AlgoMaster)","https://algomaster.io/learn/dsa/linked-list-in-place-reversal-introduction"]],[["reverse-linked-list","Reverse Linked List"],["merge-two-sorted-lists","Merge Two Sorted Lists"]]],["P","Fast and slow pointers",["Cycle detection","Finding the middle","Floyd's algorithm"],[["Read","Fast and slow pointers pattern (AlgoMaster)","https://algomaster.io/learn/dsa/fast-slow-pointers-introduction"]],[["linked-list-cycle","Linked List Cycle"],["middle-of-the-linked-list","Middle of the Linked List"],["find-the-duplicate-number","Find the Duplicate Number"]]],["P","Reordering lists",["Split, reverse, merge","Gap of n between two pointers"],[["Read","Linked lists (AlgoMaster)","https://algomaster.io/learn/dsa/linked-list-introduction"]],[["reorder-list","Reorder List"],["remove-nth-node-from-end-of-list","Remove Nth Node From End of List"]]],["P","Copying and arithmetic on lists",["Mapping old nodes to new","Carrying digits"],[["Read","Linked lists (AlgoMaster)","https://algomaster.io/learn/dsa/linked-list-introduction"]],[["copy-list-with-random-pointer","Copy List with Random Pointer"],["add-two-numbers","Add Two Numbers"]]],["P","LRU cache",["Hash map plus doubly linked list","O(1) get and put","Link to caching in system design"],[["Read","Cache eviction strategies (AlgoMaster)","https://blog.algomaster.io/p/7-cache-eviction-strategies"]],[["lru-cache","LRU Cache"]]],["P","Linked lists, hard",["Merging k lists with a heap","Reversing in groups"],[["Read","In-place reversal pattern (AlgoMaster)","https://algomaster.io/learn/dsa/linked-list-in-place-reversal-introduction"]],[["merge-k-sorted-lists","Merge k Sorted Lists"],["reverse-nodes-in-k-group","Reverse Nodes in k-Group"]]],["R","Review the week",["Reverse a list recursively and iteratively","Redo LRU cache from memory"],[],[]]]],[5,"dsa","Trees I",[["P","Tree basics and traversal",["Preorder, inorder, postorder","Recursion on trees","Height and depth"],[["Read","Binary trees (AlgoMaster)","https://algomaster.io/learn/dsa/binary-tree-introduction"]],[["invert-binary-tree","Invert Binary Tree"],["maximum-depth-of-binary-tree","Maximum Depth of Binary Tree"]]],["P","DFS on trees",["Returning values up the tree","Global answer vs return value"],[["Read","DFS traversal (AlgoMaster)","https://algomaster.io/learn/dsa/dfs-introduction"]],[["diameter-of-binary-tree","Diameter of Binary Tree"],["balanced-binary-tree","Balanced Binary Tree"]]],["P","Comparing trees",["Recursing on two trees at once","Subtree checks"],[["Read","Binary trees (AlgoMaster)","https://algomaster.io/learn/dsa/binary-tree-introduction"]],[["same-tree","Same Tree"],["subtree-of-another-tree","Subtree of Another Tree"]]],["P","BFS and level order",["Queue-based BFS","Processing level by level"],[["Read","BFS traversal (AlgoMaster)","https://algomaster.io/learn/dsa/bfs-introduction"]],[["binary-tree-level-order-traversal","Binary Tree Level Order Traversal"],["binary-tree-right-side-view","Binary Tree Right Side View"]]],["P","Binary search trees",["BST property","Valid ranges per node","LCA in a BST"],[["Read","Binary search trees (AlgoMaster)","https://algomaster.io/learn/dsa/bst-introduction"]],[["lowest-common-ancestor-of-a-binary-search-tree","Lowest Common Ancestor of a BST"],["validate-binary-search-tree","Validate Binary Search Tree"]]],["P","BST order and path state",["Inorder gives sorted order","Passing state down the path"],[["Read","Binary search trees (AlgoMaster)","https://algomaster.io/learn/dsa/bst-introduction"]],[["kth-smallest-element-in-a-bst","Kth Smallest Element in a BST"],["count-good-nodes-in-binary-tree","Count Good Nodes in Binary Tree"]]],["R","Review the week",["Write all three DFS orders iteratively","Redo validate BST"],[],[]]]],[6,"dsa","Trees II, tries and heaps",[["P","Building trees from traversals",["Preorder gives the root","Inorder splits left and right"],[["Read","Binary trees (AlgoMaster)","https://algomaster.io/learn/dsa/binary-tree-introduction"]],[["construct-binary-tree-from-preorder-and-inorder-traversal","Construct Binary Tree from Preorder and Inorder"]]],["P","Trees, hard",["Max path through a node","Serializing with null markers"],[["Read","DFS traversal (AlgoMaster)","https://algomaster.io/learn/dsa/dfs-introduction"]],[["binary-tree-maximum-path-sum","Binary Tree Maximum Path Sum"],["serialize-and-deserialize-binary-tree","Serialize and Deserialize Binary Tree"]]],["P","Tries",["Trie node structure","Insert, search, startsWith","Wildcard search with DFS"],[["Read","Tries (AlgoMaster)","https://algomaster.io/learn/dsa/tries-introduction"]],[["implement-trie-prefix-tree","Implement Trie"],["design-add-and-search-words-data-structure","Design Add and Search Words"]]],["P","Trie plus backtracking",["Building a trie of words","Pruning the search on a grid"],[["Read","Tries (AlgoMaster)","https://algomaster.io/learn/dsa/tries-introduction"]],[["word-search-ii","Word Search II"]]],["P","Heaps basics",["Min-heap vs max-heap","Heap of size k","Heap operations and costs"],[["Read","Heaps (AlgoMaster)","https://algomaster.io/learn/dsa/heaps-introduction"]],[["kth-largest-element-in-a-stream","Kth Largest Element in a Stream"],["last-stone-weight","Last Stone Weight"],["k-closest-points-to-origin","K Closest Points to Origin"]]],["P","Heap patterns",["Quickselect vs heap","Scheduling with a heap","Two heaps for a running median"],[["Read","Top K elements pattern (AlgoMaster)","https://algomaster.io/learn/dsa/top-k-elements-introduction"]],[["kth-largest-element-in-an-array","Kth Largest Element in an Array"],["task-scheduler","Task Scheduler"],["find-median-from-data-stream","Find Median from Data Stream"]]],["R","Review the week",["Implement a trie from memory","Redo find median from data stream"],[],[]]]],[7,"dsa","Backtracking",[["P","Recursion and subsets",["Include or exclude each element","Handling duplicates by sorting"],[["Read","Recursion (AlgoMaster)","https://algomaster.io/learn/dsa/recursion-fundamentals"],["Read","Backtracking (AlgoMaster)","https://algomaster.io/learn/dsa/backtracking-introduction"]],[["subsets","Subsets"],["subsets-ii","Subsets II"]]],["P","Combinations",["Reusing vs not reusing elements","Pruning when the sum is exceeded"],[["Read","Backtracking (AlgoMaster)","https://algomaster.io/learn/dsa/backtracking-introduction"]],[["combination-sum","Combination Sum"],["combination-sum-ii","Combination Sum II"]]],["P","Permutations",["Swapping vs a used-set","Mapping digits to letters"],[["Read","Backtracking (AlgoMaster)","https://algomaster.io/learn/dsa/backtracking-introduction"]],[["permutations","Permutations"],["letter-combinations-of-a-phone-number","Letter Combinations of a Phone Number"]]],["P","Grid backtracking",["Marking visited cells and undoing","Four-direction search"],[["Read","Backtracking (AlgoMaster)","https://algomaster.io/learn/dsa/backtracking-introduction"]],[["word-search","Word Search"]]],["P","Partitioning",["Try every cut point","Checking palindromes quickly"],[["Read","Backtracking (AlgoMaster)","https://algomaster.io/learn/dsa/backtracking-introduction"]],[["palindrome-partitioning","Palindrome Partitioning"]]],["P","Backtracking, hard",["Tracking columns and diagonals","Building the board output"],[["Read","Backtracking (AlgoMaster)","https://algomaster.io/learn/dsa/backtracking-introduction"]],[["n-queens","N-Queens"]]],["R","Review the week",["Write the backtracking template from memory","Redo N-Queens"],[],[]]]],[8,"dsa","Graphs I",[["P","Graph basics and DFS on grids",["Adjacency lists vs matrices","DFS flood fill","Counting components"],[["Read","Graph theory (AlgoMaster)","https://algomaster.io/learn/dsa/graphs-introduction"],["Read","DFS traversal (AlgoMaster)","https://algomaster.io/learn/dsa/dfs-introduction"]],[["number-of-islands","Number of Islands"],["max-area-of-island","Max Area of Island"]]],["P","Cloning and border DFS",["Old-to-new node maps","Searching inward from the edges"],[["Read","DFS traversal (AlgoMaster)","https://algomaster.io/learn/dsa/dfs-introduction"]],[["clone-graph","Clone Graph"],["pacific-atlantic-water-flow","Pacific Atlantic Water Flow"]]],["P","BFS on grids",["Multi-source BFS","Counting minutes by levels"],[["Read","BFS traversal (AlgoMaster)","https://algomaster.io/learn/dsa/bfs-introduction"]],[["rotting-oranges","Rotting Oranges"],["surrounded-regions","Surrounded Regions"]]],["P","Topological sort",["Indegree and Kahn's algorithm","Cycle detection with DFS colors"],[["Read","Graph theory (AlgoMaster)","https://algomaster.io/learn/dsa/graphs-introduction"]],[["course-schedule","Course Schedule"],["course-schedule-ii","Course Schedule II"]]],["P","Union-Find",["Find with path compression","Union by rank","Detecting a redundant edge"],[["Read","Union-Find (AlgoMaster)","https://algomaster.io/learn/dsa/union-find-introduction"]],[["redundant-connection","Redundant Connection"],["accounts-merge","Accounts Merge"]]],["P","BFS shortest path",["Unweighted shortest path","Generic patterns for neighbors"],[["Read","BFS traversal (AlgoMaster)","https://algomaster.io/learn/dsa/bfs-introduction"]],[["word-ladder","Word Ladder"]]],["R","Review the week",["Explain when to use BFS vs DFS","Redo course schedule"],[],[]]]],[9,"dsa","Advanced graphs",[["P","Dijkstra's algorithm",["Min-heap of distances","Why it fails with negative edges"],[["Read","Dijkstra's algorithm (AlgoMaster)","https://algomaster.io/learn/dsa/dijkstras-algorithm"]],[["network-delay-time","Network Delay Time"]]],["P","Dijkstra variants",["Minimizing the max edge on a path","Grids as weighted graphs"],[["Read","Dijkstra's algorithm (AlgoMaster)","https://algomaster.io/learn/dsa/dijkstras-algorithm"]],[["swim-in-rising-water","Swim in Rising Water"],["path-with-minimum-effort","Path With Minimum Effort"]]],["P","Minimum spanning tree",["Prim's algorithm","Kruskal's algorithm with Union-Find"],[["Read","Union-Find (AlgoMaster)","https://algomaster.io/learn/dsa/union-find-introduction"]],[["min-cost-to-connect-all-points","Min Cost to Connect All Points"]]],["P","Bellman-Ford and limited stops",["Relaxing edges k times","Copying distances each round"],[["Read","Graph theory (AlgoMaster)","https://algomaster.io/learn/dsa/graphs-introduction"]],[["cheapest-flights-within-k-stops","Cheapest Flights Within K Stops"]]],["P","Eulerian paths",["Hierholzer's algorithm","Lexical order with sorted neighbors"],[["Read","DFS traversal (AlgoMaster)","https://algomaster.io/learn/dsa/dfs-introduction"]],[["reconstruct-itinerary","Reconstruct Itinerary"]]],["P","Mixed graph practice",["Bipartite check with coloring","Safe nodes via cycle detection","Choosing the right graph tool"],[["Read","Graph theory (AlgoMaster)","https://algomaster.io/learn/dsa/graphs-introduction"]],[["is-graph-bipartite","Is Graph Bipartite?"],["find-eventual-safe-states","Find Eventual Safe States"]]],["R","Review the week",["Write Dijkstra from memory","Redo cheapest flights"],[],[]]]],[10,"dsa","Dynamic programming I",[["P","DP introduction",["Recursion, memoization, tabulation","Defining state and transitions"],[["Read","Dynamic programming (AlgoMaster)","https://algomaster.io/learn/dsa/dp-introduction"],["Read","20 DP patterns (AlgoMaster)","https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming"]],[["climbing-stairs","Climbing Stairs"],["min-cost-climbing-stairs","Min Cost Climbing Stairs"]]],["P","House robber pattern",["Take or skip","Circular arrays: run twice"],[["Read","Dynamic programming (AlgoMaster)","https://algomaster.io/learn/dsa/dp-introduction"]],[["house-robber","House Robber"],["house-robber-ii","House Robber II"]]],["P","Palindromes",["Expanding around centers","Counting palindromic substrings"],[["Read","Dynamic programming (AlgoMaster)","https://algomaster.io/learn/dsa/dp-introduction"]],[["longest-palindromic-substring","Longest Palindromic Substring"],["palindromic-substrings","Palindromic Substrings"]]],["P","Decode ways and coin change",["Counting ways","Minimum number of coins"],[["Read","20 DP patterns (AlgoMaster)","https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming"]],[["decode-ways","Decode Ways"],["coin-change","Coin Change"]]],["P","Subarrays and word break",["Tracking max and min products","Dictionary-based DP"],[["Read","20 DP patterns (AlgoMaster)","https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming"]],[["maximum-product-subarray","Maximum Product Subarray"],["word-break","Word Break"]]],["P","LIS and subset sum",["O(n²) and O(n log n) LIS","0/1 knapsack as subset sum"],[["Read","20 DP patterns (AlgoMaster)","https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming"]],[["longest-increasing-subsequence","Longest Increasing Subsequence"],["partition-equal-subset-sum","Partition Equal Subset Sum"]]],["R","Review the week",["Convert one memoized solution to tabulation","Redo coin change"],[],[]]]],[11,"dsa","Dynamic programming II",[["P","Grid DP",["Paths in a grid","Space optimization to one row"],[["Read","Dynamic programming (AlgoMaster)","https://algomaster.io/learn/dsa/dp-introduction"]],[["unique-paths","Unique Paths"],["minimum-path-sum","Minimum Path Sum"]]],["P","Longest common subsequence",["2D table on two strings","Reconstructing the answer"],[["Read","20 DP patterns (AlgoMaster)","https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming"]],[["longest-common-subsequence","Longest Common Subsequence"]]],["P","State machines and unbounded knapsack",["Buy, sell, cooldown states","Counting combinations of coins"],[["Read","20 DP patterns (AlgoMaster)","https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming"]],[["best-time-to-buy-and-sell-stock-with-cooldown","Best Time to Buy and Sell Stock with Cooldown"],["coin-change-ii","Coin Change II"]]],["P","Target sum and interleaving",["Sums with a hash map DP","Two-string interleaving"],[["Read","20 DP patterns (AlgoMaster)","https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming"]],[["target-sum","Target Sum"],["interleaving-string","Interleaving String"]]],["P","Matrix DP with memoization",["DFS plus memo on a grid","Counting distinct subsequences"],[["Read","Dynamic programming (AlgoMaster)","https://algomaster.io/learn/dsa/dp-introduction"]],[["longest-increasing-path-in-a-matrix","Longest Increasing Path in a Matrix"],["distinct-subsequences","Distinct Subsequences"]]],["P","DP, hard",["Edit distance operations","Interval DP","Regex matching"],[["Read","20 DP patterns (AlgoMaster)","https://blog.algomaster.io/p/20-patterns-to-master-dynamic-programming"]],[["edit-distance","Edit Distance"],["burst-balloons","Burst Balloons"],["regular-expression-matching","Regular Expression Matching"]]],["R","Review the week",["Explain edit distance with a table","Redo LCS"],[],[]]]],[12,"dsa","Greedy, intervals, math and bits",[["P","Kadane's algorithm and jump games",["Max subarray in one pass","Greedy reach","Greedy BFS levels"],[["Read","Kadane's algorithm (AlgoMaster)","https://algomaster.io/learn/dsa/kadane-s-algorithm-introduction"],["Read","Greedy algorithms (AlgoMaster)","https://algomaster.io/learn/dsa/greedy-introduction"]],[["maximum-subarray","Maximum Subarray"],["jump-game","Jump Game"],["jump-game-ii","Jump Game II"]]],["P","Greedy II",["Proving a greedy choice","Grouping consecutive cards","Last index of each character"],[["Read","Greedy algorithms (AlgoMaster)","https://algomaster.io/learn/dsa/greedy-introduction"]],[["gas-station","Gas Station"],["hand-of-straights","Hand of Straights"],["partition-labels","Partition Labels"]]],["P","Intervals",["Sort by start","Merging overlaps","Removing the fewest intervals"],[["Read","Overlapping intervals pattern (AlgoMaster)","https://algomaster.io/learn/dsa/intervals-introduction"]],[["insert-interval","Insert Interval"],["merge-intervals","Merge Intervals"],["non-overlapping-intervals","Non-overlapping Intervals"]]],["P","Matrix manipulation",["Transpose then reverse","Layer-by-layer traversal","Using the first row as markers"],[["Read","Arrays (AlgoMaster)","https://algomaster.io/learn/dsa/arrays-introduction"]],[["rotate-image","Rotate Image"],["spiral-matrix","Spiral Matrix"],["set-matrix-zeroes","Set Matrix Zeroes"]]],["P","Math",["Cycle detection with numbers","Fast exponentiation","Grade-school multiplication"],[["Watch","Search YouTube: NeetCode math and geometry problems","https://www.youtube.com/results?search_query=NeetCode+math+and+geometry+problems"]],[["happy-number","Happy Number"],["plus-one","Plus One"],["powx-n","Pow(x, n)"],["multiply-strings","Multiply Strings"]]],["P","Bit manipulation",["XOR tricks","Counting set bits","Bit DP"],[["Read","Bit manipulation (AlgoMaster)","https://algomaster.io/learn/dsa/bit-manipulation-introduction"]],[["single-number","Single Number"],["number-of-1-bits","Number of 1 Bits"],["counting-bits","Counting Bits"],["missing-number","Missing Number"]]],["R","Final review",["Re-solve your three weakest problems","Time-boxed mock: 2 problems in 45 minutes"],[["Read","20 DSA patterns (AlgoMaster)","https://blog.algomaster.io/p/20-dsa-patterns"],["Read","NeetCode roadmap","https://neetcode.io/roadmap"]],[]]]]],"ddia":[[1,"Reliable, Scalable, and Maintainable Applications","Part I, Foundations","Weeks 1 and 6",["Reliability and faults","Scalability: load parameters and percentiles","Maintainability: operability, simplicity, evolvability"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Reliable, Scalable, and Maintainable Applications","https://www.youtube.com/results?search_query=Martin+Kleppmann+Reliable%2C+Scalable%2C+and+Maintainable+Applications"]]],[2,"Data Models and Query Languages","Part I, Foundations","Days 8–12",["Relational vs document models","Declarative queries","Graph data models"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Data Models and Query Languages","https://www.youtube.com/results?search_query=Martin+Kleppmann+Data+Models+and+Query+Languages"]]],[3,"Storage and Retrieval","Part I, Foundations","Day 11 (indexing)",["Log-structured storage: SSTables and LSM-trees","B-trees","OLTP vs OLAP","Column-oriented storage"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Storage and Retrieval","https://www.youtube.com/results?search_query=Martin+Kleppmann+Storage+and+Retrieval"]]],[4,"Encoding and Evolution","Part I, Foundations","Day 3 (API design)",["JSON, Protocol Buffers, Avro","Schema evolution","Dataflow through databases, services and messages"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Encoding and Evolution","https://www.youtube.com/results?search_query=Martin+Kleppmann+Encoding+and+Evolution"]]],[5,"Replication","Part II, Distributed data","Days 15–16",["Leaders and followers","Problems with replication lag","Multi-leader replication","Leaderless replication"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Replication","https://www.youtube.com/results?search_query=Martin+Kleppmann+Replication"]]],[6,"Partitioning","Part II, Distributed data","Days 17–18",["Partitioning key-value data","Secondary indexes","Rebalancing","Request routing"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Partitioning","https://www.youtube.com/results?search_query=Martin+Kleppmann+Partitioning"]]],[7,"Transactions","Part II, Distributed data","Days 8 and 19",["ACID in practice","Weak isolation levels","Serializability"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Transactions","https://www.youtube.com/results?search_query=Martin+Kleppmann+Transactions"]]],[8,"The Trouble with Distributed Systems","Part II, Distributed data","Week 5",["Faults and partial failures","Unreliable networks","Unreliable clocks","Knowledge, truth and majorities"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann The Trouble with Distributed Systems","https://www.youtube.com/results?search_query=Martin+Kleppmann+The+Trouble+with+Distributed+Systems"]]],[9,"Consistency and Consensus","Part II, Distributed data","Days 29–34",["Linearizability","Ordering guarantees","Distributed transactions and consensus"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Consistency and Consensus","https://www.youtube.com/results?search_query=Martin+Kleppmann+Consistency+and+Consensus"]]],[10,"Batch Processing","Part III, Derived data","Week 8 (web crawler)",["Unix tools philosophy","MapReduce","Dataflow engines"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Batch Processing","https://www.youtube.com/results?search_query=Martin+Kleppmann+Batch+Processing"]]],[11,"Stream Processing","Part III, Derived data","Days 26–27 (queues, pub/sub)",["Event streams","Databases and streams (CDC)","Processing streams"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann Stream Processing","https://www.youtube.com/results?search_query=Martin+Kleppmann+Stream+Processing"]]],[12,"The Future of Data Systems","Part III, Derived data","After the main plan",["Data integration","Unbundling databases","Aiming for correctness"],[["Read","Book website: Designing Data-Intensive Applications","https://dataintensive.net/"],["Watch","Search YouTube: Martin Kleppmann The Future of Data Systems","https://www.youtube.com/results?search_query=Martin+Kleppmann+The+Future+of+Data+Systems"]]]]};
+var TRACKS = {
+  hld:{name:"HLD"}, lld:{name:"LLD"}, devops:{name:"DevOps"}, ai:{name:"AI"}, dsa:{name:"DSA"}, ddia:{name:"DDIA"}
+};
+var KIND = {L:"Learn",P:"Practice",R:"Review",B:"Build"};
+var HINT = {
+  P:"Design it yourself first, then compare with a reference solution. Explain each choice out loud.",
+  B:"Write real code in your own stack. This becomes your portfolio project.",
+  R:"Re-read this week's notes and redo anything marked revise."
+};
+var DSA_HINT = "Give each problem 25 minutes before looking at a solution. Then write the pattern in your notes.";
+var DEVOPS_HINT = "Do this hands-on: type every command yourself, on a VM or the AWS free tier. Set a billing alert before you create anything in the cloud.";
+function hintFor(it){
+  if (it.track === "dsa") return it.kind === "R" ? HINT.R : (it.probs.length ? DSA_HINT : "");
+  if (it.track === "devops" && it.kind === "L") return DEVOPS_HINT;
+  return HINT[it.kind] || "";
+}
+var STATUSES = [["todo","Not started"],["doing","In progress"],["done","Done"],["revise","Revise"]];
+var SLABEL = {}; STATUSES.forEach(function(s){ SLABEL[s[0]] = s[1]; });
+
+var ITEMS = [], DSA = [], BYID = {};
+PLAN.main.forEach(function(w){
+  w[3].forEach(function(t, i){
+    var day = (w[0]-1)*7 + i + 1;
+    var it = {id:t[4], day:day, week:w[0], track:w[1], theme:w[2], kind:t[0], topic:t[1], subs:t[2], refs:t[3], probs:[]};
+    ITEMS.push(it); BYID[it.id] = it;
+  });
+});
+PLAN.dsa.forEach(function(w){
+  w[3].forEach(function(t, i){
+    var day = (w[0]-1)*7 + i + 1;
+    var it = {id:"s"+day, day:day, week:w[0], track:"dsa", theme:w[2], kind:t[0], topic:t[1], subs:t[2], refs:t[3], probs:t[4]};
+    DSA.push(it); BYID[it.id] = it;
+  });
+});
+var CHAPTERS = PLAN.ddia.map(function(c){
+  var it = {id:"ddia"+c[0], ch:c[0], topic:c[1], part:c[2], pairs:c[3], subs:c[4], refs:c[5], probs:[], track:"ddia", kind:"L"};
+  BYID[it.id] = it; return it;
+});
+var TOTAL = ITEMS.length, DSA_TOTAL = DSA.length;
+
+/* ---------- state ---------- */
+var KEY = "study-plan-v1";
+var state = {v:1, items:{}, updatedAt:0};
+try {
+  var raw = localStorage.getItem(KEY);
+  if (raw) { var parsed = JSON.parse(raw); if (parsed && parsed.items) state = {v:1, items:clean(parsed.items), updatedAt:parsed.updatedAt||0}; }
+} catch(e) {}
+
+function clean(items){
+  var out = {};
+  if (!items || typeof items !== "object") return out;
+  Object.keys(items).forEach(function(id){
+    if (!BYID[id]) return;
+    var src = items[id] || {}, r = {};
+    if (["doing","done","revise"].indexOf(src.s) > -1) r.s = src.s;
+    if (typeof src.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(src.date)) r.date = src.date;
+    var c = Number(src.c); if (c >= 1 && c <= 5 && Math.round(c) === c) r.c = c;
+    if (typeof src.n === "string" && src.n.trim()) r.n = src.n.slice(0, 20000);
+    var it = BYID[id];
+    if (Array.isArray(src.k)) { var k = []; src.k.forEach(function(n){ if (Number.isInteger(n) && n >= 0 && n < it.subs.length && k.indexOf(n) < 0) k.push(n); }); if (k.length) r.k = k.sort(function(x,y){ return x-y; }); }
+    if (Array.isArray(src.p)) { var ok = it.probs.map(function(p){ return p[0]; }), p = []; src.p.forEach(function(s){ if (ok.indexOf(s) > -1 && p.indexOf(s) < 0) p.push(s); }); if (p.length) r.p = p; }
+    if (Object.keys(r).length) out[id] = r;
+  });
+  return out;
+}
+function get(id){ return state.items[id] || {}; }
+function statusOf(id){ return get(id).s || "todo"; }
+function pad(n){ return n < 10 ? "0"+n : ""+n; }
+function ymd(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+
+function setFields(id, patch){
+  var cur = {}, old = get(id);
+  for (var k in old) cur[k] = old[k];
+  for (var p in patch) cur[p] = patch[p];
+  if (patch.s === "done" && !cur.date) cur.date = ymd(new Date());
+  Object.keys(cur).forEach(function(k){ if (cur[k] === "" || cur[k] == null || (Array.isArray(cur[k]) && !cur[k].length) || (k === "s" && cur[k] === "todo")) delete cur[k]; });
+  if (Object.keys(cur).length) state.items[id] = cur; else delete state.items[id];
+  state.updatedAt = Date.now();
+  persist();
+}
+
+/* ---------- saving: this browser, plus your Claude account when available ---------- */
+var sync = {ref:null, writing:false, again:false, timer:null, retried:false};
+var syncEl = document.getElementById("sync");
+function idleText(){ return sync.ref ? "Synced to your Claude account" : "Saved in this browser"; }
+function setSync(t){ syncEl.textContent = t; }
+var flashTimer;
+function flash(t){ setSync(t); clearTimeout(flashTimer); flashTimer = setTimeout(function(){ setSync(idleText()); }, 2600); }
+
+function persist(){
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
+  if (sync.ref) { setSync("Saving…"); clearTimeout(sync.timer); sync.timer = setTimeout(pushRemote, 1200); }
+  else setSync(idleText());
+}
+function pushRemote(){
+  if (!sync.ref) return;
+  if (sync.writing) { sync.again = true; return; }
+  sync.writing = true;
+  var body = {v:1, items:JSON.parse(JSON.stringify(state.items)), updatedAt:state.updatedAt || Date.now()};
+  sync.ref.set(body).then(function(){
+    sync.retried = false; setSync(idleText());
+  }, function(e){
+    var code = e && e.code;
+    if (code === "unavailable" && !sync.retried) { sync.retried = true; setTimeout(pushRemote, 1200 + Math.random()*1500); setSync("Saving…"); }
+    else if (code === "quota_exceeded") setSync("Account storage is full, so progress is saved in this browser only");
+    else { sync.ref = null; setSync("Saved in this browser"); }
+  }).then(function(){
+    sync.writing = false;
+    if (sync.again) { sync.again = false; pushRemote(); }
+  });
+}
+function connectAccount(){
+  var c = window.claude;
+  if (!c || typeof c.use !== "function") return;
+  Promise.all([c.use("db"), c.use("user")]).then(function(r){
+    var db = r[0], user = r[1];
+    if (!db || !user) return null;
+    return user.id().then(function(uid){
+      if (!uid) return null;
+      var ref = db.doc("data/users/" + uid + "/progress");
+      return ref.get().then(function(snap){
+        var remote = snap.exists ? snap.data() : null;
+        sync.ref = ref;
+        if (remote && remote.items && (remote.updatedAt || 0) >= (state.updatedAt || 0)) {
+          state = {v:1, items:clean(JSON.parse(JSON.stringify(remote.items))), updatedAt:remote.updatedAt || 0};
+          try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
+          ui.open = {};
+          ui.tab = (nextItem() || ITEMS[0]).track;
+          renderAll();
+          setSync(idleText());
+        } else if (Object.keys(state.items).length) {
+          pushRemote();
+        } else setSync(idleText());
+        document.getElementById("footNote").textContent = "Progress saves to your Claude account as you go, so it follows you to other devices when you open this link.";
+      });
+    });
+  }).catch(function(){ sync.ref = null; setSync("Saved in this browser"); });
+}
+
+/* ---------- helpers ---------- */
+function el(tag, attrs){
+  var n = document.createElement(tag);
+  if (attrs) for (var k in attrs) {
+    if (k === "text") n.textContent = attrs[k];
+    else if (k === "class") n.className = attrs[k];
+    else n.setAttribute(k, attrs[k]);
+  }
+  for (var i = 2; i < arguments.length; i++) if (arguments[i] != null) n.appendChild(typeof arguments[i] === "string" ? document.createTextNode(arguments[i]) : arguments[i]);
+  return n;
+}
+var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function nextIn(list){
+  var order = ["doing","todo","revise"];
+  for (var o = 0; o < order.length; o++) for (var i = 0; i < list.length; i++) if (statusOf(list[i].id) === order[o]) return list[i];
+  return null;
+}
+function nextItem(){ return nextIn(ITEMS); }
+function counts(list){
+  var r = {done:0, total:list.length, revise:0};
+  list.forEach(function(it){ var s = statusOf(it.id); if (s === "done") r.done++; if (s === "revise") r.revise++; });
+  return r;
+}
+function itemsOf(track){ return track === "ddia" ? CHAPTERS : track === "dsa" ? DSA : ITEMS.filter(function(it){ return it.track === track; }); }
+function streak(){
+  var days = {};
+  Object.keys(state.items).forEach(function(k){ var d = state.items[k].date; if (d) days[d] = 1; });
+  var d = new Date(), n = 0;
+  if (!days[ymd(d)]) d.setDate(d.getDate() - 1);
+  while (days[ymd(d)]) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+
+/* ---------- UI state ---------- */
+var first = nextItem();
+var ui = {tab:(first || ITEMS[0]).track, filter:"all", open:{}};
+
+/* ---------- grids ---------- */
+var cells = {};
+function buildGrid(gridId, numsId, list, weeks){
+  var g = document.getElementById(gridId), wn = document.getElementById(numsId);
+  for (var w = 1; w <= weeks; w++) wn.appendChild(el("span", {text:String(w), class:(w - 1) % 4 ? "minor" : ""}));
+  list.forEach(function(it){
+    var b = el("button", {type:"button", class:"cell t-" + it.track + (it.kind === "R" ? " review" : ""), style:"--w:" + (it.week - 1)});
+    b.addEventListener("click", function(){ showDay(it.id); });
+    cells[it.id] = b; g.appendChild(b);
+  });
+  setTimeout(function(){ g.classList.remove("intro"); }, 1200);
+}
+var PLAN_WEEKS = PLAN.main.length;
+["weeknums","grid","bands"].forEach(function(id){ document.getElementById(id).style.setProperty("--cols", PLAN_WEEKS); });
+document.getElementById("planCap").textContent = "Plan, " + TOTAL + " days";
+(function buildBands(){
+  var bands = document.getElementById("bands"), run = null;
+  PLAN.main.forEach(function(w){
+    if (run && run.track === w[1]) run.n++;
+    else { run = {track:w[1], n:1}; run.el = el("span", {class:"band t-" + w[1], text:TRACKS[w[1]].name}); bands.appendChild(run.el); }
+    run.el.style.gridColumn = "span " + run.n;
+  });
+})();
+buildGrid("grid", "weeknums", ITEMS, PLAN_WEEKS);
+buildGrid("grid2", "weeknums2", DSA, 12);
+function updateGrid(){
+  var nx = nextItem(), nd = nextIn(DSA);
+  ITEMS.concat(DSA).forEach(function(it){
+    var s = statusOf(it.id), b = cells[it.id];
+    b.classList.toggle("done", s === "done");
+    b.classList.toggle("doing", s === "doing");
+    b.classList.toggle("revise", s === "revise");
+    b.classList.toggle("current", (!!nx && nx.id === it.id) || (!!nd && nd.id === it.id));
+    var label = (it.track === "dsa" ? "DSA day " : "Day ") + it.day + ": " + it.topic;
+    b.setAttribute("aria-label", label + ", " + SLABEL[s]);
+    b.title = label;
+  });
+}
+
+/* ---------- checklists and resources ---------- */
+function has(arr, v){ return !!arr && arr.indexOf(v) > -1; }
+function toggleIn(id, key, v, on){
+  var cur = (get(id)[key] || []).slice(), i = cur.indexOf(v);
+  if (on && i < 0) cur.push(v);
+  if (!on && i > -1) cur.splice(i, 1);
+  var patch = {}; patch[key] = cur;
+  if (on && statusOf(id) === "todo") patch.s = "doing";
+  setFields(id, patch);
+  refresh(id);
+}
+function buildCover(it, prefix){
+  var d = get(it.id), box = el("div", {class:"cover t-" + it.track, "data-cover":it.id});
+  if (it.subs.length) {
+    var ul = el("ul", {class:"checks"});
+    it.subs.forEach(function(s, i){
+      var cb = el("input", {type:"checkbox", "data-k":String(i), id:prefix + it.id + "-k" + i});
+      cb.checked = has(d.k, i);
+      cb.addEventListener("change", function(){ toggleIn(it.id, "k", i, cb.checked); });
+      ul.appendChild(el("li", null, el("label", {for:prefix + it.id + "-k" + i}, cb, el("span", {text:s}))));
+    });
+    box.appendChild(el("div", null, el("h4", {text:"What to cover"}), ul));
+  }
+  if (it.probs.length) {
+    var pl = el("ul", {class:"probs"});
+    it.probs.forEach(function(p){
+      var cb = el("input", {type:"checkbox", "data-p":p[0], "aria-label":"Solved: " + p[1]});
+      cb.checked = has(d.p, p[0]);
+      cb.addEventListener("change", function(){ toggleIn(it.id, "p", p[0], cb.checked); });
+      pl.appendChild(el("li", null, cb,
+        el("a", {href:"https://leetcode.com/problems/" + p[0] + "/", target:"_blank", rel:"noopener", text:p[1]}),
+        el("span", {class:"vid"}, el("a", {href:"https://www.youtube.com/results?search_query=" + encodeURIComponent("NeetCode " + p[1]), target:"_blank", rel:"noopener", text:"Solution video"}))));
+    });
+    box.appendChild(el("div", null, el("h4", {text:"Problems"}), pl));
+  }
+  if (it.refs.length) {
+    var rl = el("ul", {class:"refs"});
+    it.refs.forEach(function(r){
+      rl.appendChild(el("li", null, el("span", {class:"chip", text:r[0]}), el("a", {href:r[2], target:"_blank", rel:"noopener", text:r[1]})));
+    });
+    box.appendChild(el("div", null, el("h4", {text:"Resources"}), rl));
+  }
+  return box;
+}
+function syncCover(box, id){
+  var d = get(id);
+  box.querySelectorAll("input[data-k]").forEach(function(cb){ cb.checked = has(d.k, Number(cb.dataset.k)); });
+  box.querySelectorAll("input[data-p]").forEach(function(cb){ cb.checked = has(d.p, cb.dataset.p); });
+}
+function progressText(it){
+  var d = get(it.id), parts = [];
+  if (it.probs.length) parts.push((d.p ? d.p.length : 0) + " of " + it.probs.length + " solved");
+  else if (it.subs.length) parts.push((d.k ? d.k.length : 0) + " of " + it.subs.length + " covered");
+  return parts.join("");
+}
+
+/* ---------- today panels ---------- */
+function makePanel(rootId, list, total, label, prefix){
+  var root = document.getElementById(rootId), p = {view:null, shown:null};
+  var body = el("div", {class:"pbody"});
+  var dayEl = el("p", {class:"day"});
+  var prev = el("button", {type:"button", class:"navbtn", "aria-label":"Previous day", text:"‹"});
+  var next = el("button", {type:"button", class:"navbtn", "aria-label":"Next day", text:"›"});
+  var topic = el("h2"), meta = el("p", {class:"meta"}), hint = el("p", {class:"hint"}), cover = el("div");
+  var start = el("button", {type:"button", class:"btn", text:"Start"});
+  var done = el("button", {type:"button", class:"btn primary", text:"Mark done"});
+  var undo = el("button", {type:"button", class:"btn", text:"Mark not done"});
+  var notes = el("button", {type:"button", class:"btn quiet", text:"Write notes"});
+  var acts = el("div", {class:"actions"}, start, done, undo, notes);
+  body.appendChild(el("div", {class:"dayrow"}, dayEl, el("div", {class:"daynav"}, prev, next)));
+  [topic, meta, hint, cover, acts].forEach(function(n){ body.appendChild(n); });
+  root.appendChild(body);
+
+  function current(){ return p.view ? BYID[p.view] : nextIn(list); }
+  function go(delta){
+    var cur = current() || list[list.length - 1], i = list.indexOf(cur) + delta;
+    if (i < 0 || i >= list.length) return;
+    var nx = nextIn(list);
+    p.view = nx && list[i].id === nx.id ? null : list[i].id;
+    render(true);
+  }
+  prev.addEventListener("click", function(){ go(-1); });
+  next.addEventListener("click", function(){ go(1); });
+  start.addEventListener("click", function(){ var it = current(); setFields(it.id, {s:"doing"}); refresh(it.id); });
+  undo.addEventListener("click", function(){ var it = current(); setFields(it.id, {s:"todo"}); refresh(it.id); });
+  notes.addEventListener("click", function(){ openItem(current().id, true); });
+  done.addEventListener("click", function(){
+    var it = current(), wasToday = !p.view;
+    setFields(it.id, {s:"done"});
+    var cell = cells[it.id];
+    if (cell) { cell.classList.remove("pulse"); void cell.offsetWidth; cell.classList.add("pulse"); }
+    flash((it.track === "dsa" ? "DSA day " : "Day ") + it.day + " marked done");
+    if (wasToday) p.shown = null;
+    refresh(it.id);
+    botCheer();
+  });
+
+  function render(animate){
+    var nx = nextIn(list), cur = current();
+    root.className = "panel t-" + (cur ? cur.track : list[0].track);
+    dayEl.textContent = ""; meta.textContent = "";
+    if (!cur) {
+      dayEl.textContent = "All done";
+      topic.textContent = "You finished all " + total + " days here.";
+      hint.textContent = "Reread anything you rated 1 or 2, and keep practicing out loud.";
+      cover.textContent = ""; acts.hidden = true; prev.disabled = next.disabled = true; p.shown = null;
+      return;
+    }
+    acts.hidden = false;
+    var i = list.indexOf(cur);
+    prev.disabled = i <= 0; next.disabled = i >= list.length - 1;
+    dayEl.appendChild(document.createTextNode(label + cur.day));
+    dayEl.appendChild(el("span", {class:"of", text:"of " + total}));
+    topic.textContent = cur.topic;
+    meta.appendChild(el("span", {class:"tag", text:TRACKS[cur.track].name}));
+    meta.appendChild(document.createTextNode("Week " + cur.week + ", " + cur.theme));
+    var s = statusOf(cur.id);
+    if (s === "doing") meta.appendChild(el("span", {text:"In progress"}));
+    if (s === "revise") meta.appendChild(el("span", {text:"Marked to revise"}));
+    if (s === "done") meta.appendChild(el("span", {class:"donebadge", text:"Done"}));
+    if (p.view) {
+      var back = el("button", {type:"button", class:"linkbtn", text:"Back to today"});
+      back.addEventListener("click", function(){ p.view = null; render(true); });
+      meta.appendChild(el("span", {class:"browsing"}, (nx ? "Not today's topic. " : ""), back));
+    }
+    hint.textContent = hintFor(cur);
+    if (p.shown !== cur.id) { cover.textContent = ""; cover.appendChild(buildCover(cur, prefix)); if (p.ready) animate = true; p.shown = cur.id; }
+    else syncCover(cover, cur.id);
+    start.hidden = s !== "todo";
+    done.hidden = s === "done";
+    undo.hidden = s !== "done";
+    if (animate) { root.classList.remove("advance"); void root.offsetWidth; root.classList.add("advance"); }
+    p.ready = true;
+  }
+  p.render = render;
+  p.show = function(id){ var nx = nextIn(list); p.view = nx && nx.id === id ? null : id; render(true); };
+  p.reset = function(){ p.view = null; p.shown = null; };
+  return p;
+}
+var panels = {
+  main: makePanel("panelMain", ITEMS, TOTAL, "Day ", "h-"),
+  dsa: makePanel("panelDsa", DSA, DSA_TOTAL, "Day ", "q-")
+};
+function showDay(id){
+  var p = BYID[id].track === "dsa" ? panels.dsa : panels.main;
+  p.show(id);
+  document.getElementById(p === panels.dsa ? "panelDsa" : "panelMain").scrollIntoView({block:"start", behavior:reduced ? "auto" : "smooth"});
+}
+function updatePanels(){ panels.main.render(false); panels.dsa.render(false); }
+
+/* ---------- overview ---------- */
+var ORDER = ["hld","lld","devops","ai","dsa","ddia"];
+function updateStats(){
+  var main = counts(ITEMS), ds = counts(DSA), st = streak();
+  var revise = main.revise + ds.revise + counts(CHAPTERS).revise;
+  var parts = [main.done + " of " + TOTAL + " plan days and " + ds.done + " of " + DSA_TOTAL + " DSA days done."];
+  if (revise) parts.push(revise + " marked to revise.");
+  document.getElementById("summary").textContent = parts.join(" ");
+
+  var days = {};
+  Object.keys(state.items).forEach(function(k){ var d = state.items[k].date; if (d) days[d] = 1; });
+  var strip = document.getElementById("days14"), d = new Date(), on = 0;
+  strip.textContent = "";
+  d.setDate(d.getDate() - 13);
+  for (var i = 0; i < 14; i++) {
+    var key = ymd(d), hit = !!days[key]; if (hit) on++;
+    strip.appendChild(el("i", {class:(hit ? "on" : "") + (i === 13 ? " today" : ""), title:key + (hit ? ": studied" : "")}));
+    d.setDate(d.getDate() + 1);
+  }
+  strip.setAttribute("aria-label", "Studied on " + on + " of the last 14 days");
+  document.getElementById("streakTxt").textContent = st
+    ? st + (st === 1 ? " day" : " days") + " in a row. Keep it going."
+    : "Finish a topic today to start a streak.";
+
+  var bars = document.getElementById("bars");
+  bars.textContent = "";
+  ORDER.forEach(function(t){
+    var c = counts(itemsOf(t)), pct = c.total ? Math.round(c.done / c.total * 100) : 0;
+    var fill = el("span", {class:"fill"}); fill.style.width = pct + "%";
+    bars.appendChild(el("span", {class:"name t-" + t, text:TRACKS[t].name}));
+    bars.appendChild(el("span", {class:"trk t-" + t, role:"img", "aria-label":TRACKS[t].name + ": " + pct + "% done"}, fill));
+    bars.appendChild(el("span", {class:"n", text:c.done + "/" + c.total}));
+  });
+}
+
+/* ---------- Bit, the study buddy ---------- */
+var LINES = {
+  start: [
+    "Day 1 is the hardest one. Open the first topic and give it twenty minutes.",
+    "You don't need a perfect plan to begin. You need the first checkbox.",
+    "Every senior engineer once read about load balancers for the first time. Today's your turn."
+  ],
+  general: [
+    "Small daily progress beats a weekend binge. One topic, then rest.",
+    "You're not behind. You're one topic away from being further ahead.",
+    "Understanding beats memorizing. If you can explain it to a friend, you own it.",
+    "Interviewers don't want a perfect design. They want to hear your tradeoffs.",
+    "Consistency is a skill too, and you're practicing it right now.",
+    "Twenty focused minutes count. Start the timer.",
+    "The topic that feels confusing today is the one you'll explain easily next month.",
+    "Write your notes like you're teaching someone. Future you will thank you.",
+    "Stuck on a problem? Good. That's where the learning actually happens.",
+    "Every app you use daily was designed by someone who started where you are.",
+    "Don't compare your day 5 to someone else's day 500.",
+    "Read it, close the tab, then explain it out loud. That's the whole trick.",
+    "A slow day still counts if you showed up.",
+    "Pick one subtopic. Finish it. Then decide about the next one.",
+    "Your next job is being built one checkbox at a time.",
+    "Skills compound. Today's topic makes next week's topic easier.",
+    "The engineers who get ahead aren't always smarter. They kept showing up.",
+    "Mistakes in practice are cheap. Make lots of them here.",
+    "Ask 'why' one more time than feels necessary.",
+    "If you can draw it, you understand it. Grab a pen.",
+    "Learning feels slow from the inside and fast from the outside.",
+    "Close one distraction tab. Open today's topic.",
+    "Tradeoffs, not perfect answers. That's how senior engineers think.",
+    "Your notes today are your interview prep later.",
+    "Be the engineer who knows why, not just how.",
+    "Build it, break it, fix it. That's how DevOps sticks.",
+    "Even 25 minutes on one DSA problem moves you forward.",
+    "Review days exist so you don't forget. Treat them like real days.",
+    "You're building something nobody can take away from you.",
+    "Start with the smallest step. Momentum does the rest."
+  ],
+  streak: [
+    "{n} days in a row. Protect the streak with just one topic today.",
+    "{n}-day streak. This is what a real habit looks like.",
+    "That's {n} days straight. Keep the chain going."
+  ],
+  doneToday: [
+    "You've already studied today. Anything more is a bonus.",
+    "Today's box is ticked. Rest is part of the plan too.",
+    "Great work today. Use the › arrow if you want a peek at tomorrow."
+  ],
+  comeback: [
+    "Missed a day? Normal. Missing two is the habit to avoid. Start small today.",
+    "Welcome back. Pick up right where you left off.",
+    "The streak reset. The knowledge didn't. Let's go."
+  ],
+  cheer: [
+    "Nice. That's one more thing you can explain in an interview.",
+    "Done! That's how careers get built, one tick at a time.",
+    "Another one down. I'm proud of you.",
+    "Progress saved. Take a breath, then keep going or call it a day.",
+    "That's the way. Your future self just got a little smarter."
+  ]
+};
+var bot = document.getElementById("bot"), lineEl = document.getElementById("line"), helloEl = document.getElementById("hello");
+var lineShift = 0, cheerTimer = null;
+function dayNumber(){ var d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 86400000); }
+function studiedToday(){ var t = ymd(new Date()); return Object.keys(state.items).some(function(k){ return state.items[k].date === t; }); }
+function pool(){
+  var any = Object.keys(state.items).length > 0, st = streak();
+  if (!any) return {list:LINES.start};
+  if (studiedToday()) return {list:LINES.doneToday};
+  if (st >= 2) return {list:LINES.streak, n:st};
+  if (st === 0) return {list:LINES.comeback.concat(LINES.general)};
+  return {list:LINES.general};
+}
+function setLine(text){
+  lineEl.textContent = text;
+  lineEl.classList.remove("swap"); void lineEl.offsetWidth; lineEl.classList.add("swap");
+}
+function pickLine(){
+  var p = pool(), t = p.list[(dayNumber() + lineShift) % p.list.length];
+  setLine(t.replace("{n}", p.n));
+}
+function updateGreeting(){
+  var h = new Date().getHours();
+  var g = h < 5 ? "Up late" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : h < 22 ? "Good evening" : "Up late";
+  var m = nextItem(), d = nextIn(DSA);
+  var parts = [g + "."];
+  if (m) parts.push("Today is day " + m.day + " of your plan" + (d ? " and DSA day " + d.day + "." : "."));
+  else if (d) parts.push("Plan complete. DSA day " + d.day + " is next.");
+  else parts.push("You've finished everything. Amazing.");
+  helloEl.textContent = parts.join(" ");
+  document.getElementById("greet").className = "greet t-" + (m ? m.track : "hld");
+  bot.classList.toggle("happy", studiedToday());
+}
+function botCheer(){
+  bot.classList.remove("cheer"); void bot.offsetWidth; bot.classList.add("cheer");
+  bot.classList.add("happy");
+  clearTimeout(cheerTimer);
+  cheerTimer = setTimeout(function(){ bot.classList.remove("cheer"); }, 1000);
+  setLine(LINES.cheer[Math.floor(Math.random() * LINES.cheer.length)]);
+}
+bot.addEventListener("click", function(){
+  lineShift++;
+  bot.classList.remove("cheer"); void bot.offsetWidth; bot.classList.add("cheer");
+  clearTimeout(cheerTimer); cheerTimer = setTimeout(function(){ bot.classList.remove("cheer"); }, 1000);
+  pickLine();
+});
+
+/* ---------- tabs ---------- */
+var tablist = document.getElementById("tablist");
+function renderTabs(){
+  tablist.textContent = "";
+  ORDER.forEach(function(t){
+    var c = counts(itemsOf(t));
+    var b = el("button", {type:"button", role:"tab", class:"tab t-" + t, "aria-selected":String(ui.tab === t), id:"tab-" + t},
+      TRACKS[t].name, el("small", {text:c.done + "/" + c.total}));
+    b.addEventListener("click", function(){ ui.tab = t; renderTabs(); renderList(); });
+    tablist.appendChild(b);
+  });
+  document.getElementById("list").setAttribute("aria-labelledby", "tab-" + ui.tab);
+}
+document.getElementById("filter").addEventListener("change", function(){ ui.filter = this.value; renderList(); });
+
+/* ---------- list ---------- */
+var list = document.getElementById("list");
+function visible(it){
+  var s = statusOf(it.id);
+  if (ui.filter === "todo") return s !== "done";
+  if (ui.filter === "revise") return s === "revise";
+  return true;
+}
+function confDots(c){
+  var w = el("span", {class:"conf", role:"img", "aria-label":c ? "Confidence " + c + " of 5" : "No confidence rating yet"});
+  for (var i = 1; i <= 5; i++) w.appendChild(el("i", {class:i <= (c || 0) ? "on" : ""}));
+  return w;
+}
+function subText(it){
+  var bits = [];
+  if (it.track === "ddia") bits.push(it.part + ". Read alongside " + it.pairs + ".");
+  else if (it.kind !== "L") bits.push(KIND[it.kind] + ".");
+  var p = progressText(it); if (p) bits.push(p);
+  return bits.join(" ");
+}
+function buildSub(it){
+  var d = get(it.id), n = it.probs.length || it.subs.length;
+  var got = it.probs.length ? (d.p ? d.p.length : 0) : (d.k ? d.k.length : 0);
+  var sub = el("span", {class:"sub"});
+  if (n) { var bar = el("span", {class:"mini", "aria-hidden":"true"}, el("i")); bar.firstChild.style.width = Math.round(got / n * 100) + "%"; sub.appendChild(bar); }
+  sub.appendChild(document.createTextNode(subText(it)));
+  return sub;
+}
+function buildRow(it){
+  var s = statusOf(it.id), open = !!ui.open[it.id];
+  var li = el("li", {class:"row t-" + it.track + " s-" + s + " kind-" + it.kind, "data-id":it.id});
+  var num = it.track === "ddia" ? it.ch : it.day;
+  var srLabel = it.track === "ddia" ? "Chapter " + it.ch : (it.track === "dsa" ? "DSA day " : "Day ") + it.day;
+  var btn = el("button", {type:"button", class:"rowbtn", "aria-expanded":String(open), "aria-controls":"ed-" + it.id},
+    el("span", {class:"dnum", "aria-hidden":"true", text:String(num)}),
+    el("span", null, el("span", {class:"sr", text:srLabel + ": "}), el("span", {class:"ttl", text:it.topic}), buildSub(it)),
+    el("span", {class:"pill s-" + s, text:SLABEL[s]}),
+    confDots(get(it.id).c));
+  btn.addEventListener("click", function(){
+    if (ui.open[it.id]) delete ui.open[it.id]; else ui.open[it.id] = 1;
+    var fresh = buildRow(it); li.replaceWith(fresh);
+    fresh.querySelector(".rowbtn").focus();
+  });
+  li.appendChild(btn);
+  if (open) li.appendChild(buildEditor(it));
+  return li;
+}
+function buildEditor(it){
+  var d = get(it.id);
+  var ed = el("div", {class:"editor", id:"ed-" + it.id});
+  var h = hintFor(it); if (h) ed.appendChild(el("p", {class:"hint", text:h}));
+  ed.appendChild(buildCover(it, "e-"));
+
+  var segS = el("div", {class:"seg", role:"group", "aria-label":"Status"});
+  STATUSES.forEach(function(s){
+    var b = el("button", {type:"button", "aria-pressed":String(statusOf(it.id) === s[0]), "data-s":s[0], text:s[1]});
+    b.addEventListener("click", function(){ var was = statusOf(it.id); setFields(it.id, {s:s[0]}); refresh(it.id); if (s[0] === "done" && was !== "done") botCheer(); });
+    segS.appendChild(b);
+  });
+  ed.appendChild(el("div", null, el("span", {class:"field-label", "aria-hidden":"true", text:"Status"}), segS));
+
+  var segC = el("div", {class:"seg", role:"group", "aria-label":"Confidence, 1 shaky to 5 could teach it"});
+  for (var i = 1; i <= 5; i++) (function(n){
+    var b = el("button", {type:"button", "aria-pressed":String(d.c === n), "data-c":String(n), text:String(n)});
+    b.addEventListener("click", function(){ setFields(it.id, {c:get(it.id).c === n ? null : n}); refresh(it.id); });
+    segC.appendChild(b);
+  })(i);
+  segC.appendChild(el("span", {class:"cap", text:"1 is shaky, 5 means you could teach it"}));
+
+  var date = el("input", {type:"date", id:"date-" + it.id});
+  date.value = d.date || "";
+  date.addEventListener("change", function(){ setFields(it.id, {date:date.value || null}); refresh(it.id); });
+  ed.appendChild(el("div", {class:"inline"},
+    el("div", null, el("span", {class:"field-label", "aria-hidden":"true", text:"Confidence"}), segC),
+    el("div", null, el("label", {class:"field-label", for:"date-" + it.id, text:"Date done"}), date)));
+
+  var ph = it.track === "dsa" ? "Which pattern was it? What was the key insight? What tripped you up?"
+    : it.track === "devops" ? "What did you set up? What broke, and how did you fix it?"
+    : "What does it solve? What does it cost? When would you not use it?";
+  var ta = el("textarea", {id:"notes-" + it.id, placeholder:ph});
+  ta.value = d.n || "";
+  var t;
+  ta.addEventListener("input", function(){ clearTimeout(t); t = setTimeout(function(){ setFields(it.id, {n:ta.value.trim() ? ta.value : null}); }, 500); });
+  ta.addEventListener("blur", function(){ clearTimeout(t); if ((get(it.id).n || "") !== (ta.value.trim() ? ta.value : "")) setFields(it.id, {n:ta.value.trim() ? ta.value : null}); });
+  ed.appendChild(el("div", null, el("label", {class:"field-label", for:"notes-" + it.id, text:"Notes"}), ta));
+  return ed;
+}
+function weekSection(w, items, unit){
+  var vis = items.filter(visible);
+  if (!vis.length) return null;
+  var c = counts(items);
+  var sec = el("section", {class:"week t-" + w[1], "aria-label":"Week " + w[0]},
+    el("h3", null, el("span", {class:"wk", text:"Week " + w[0]}), w[2], el("span", {class:"cnt", text:c.done + " of " + items.length + " " + unit})));
+  var ol = el("ol", {class:"rows"});
+  vis.forEach(function(it){ ol.appendChild(buildRow(it)); });
+  sec.appendChild(ol);
+  return {sec:sec, n:vis.length};
+}
+function renderList(){
+  list.textContent = "";
+  var shown = 0;
+  if (ui.tab === "ddia") {
+    var vis = CHAPTERS.filter(visible);
+    if (vis.length) {
+      var c = counts(CHAPTERS);
+      var sec = el("section", {class:"week t-ddia"},
+        el("h3", null, el("span", {class:"wk", text:"DDIA"}), "Designing Data-Intensive Applications", el("span", {class:"cnt", text:c.done + " of " + c.total + " chapters"})));
+      var ol = el("ol", {class:"rows"});
+      vis.forEach(function(it){ ol.appendChild(buildRow(it)); });
+      sec.appendChild(ol); list.appendChild(sec); shown = vis.length;
+    }
+  } else {
+    var src = ui.tab === "dsa" ? PLAN.dsa : PLAN.main.filter(function(w){ return w[1] === ui.tab; });
+    var pool = ui.tab === "dsa" ? DSA : ITEMS;
+    src.forEach(function(w){
+      var r = weekSection(w, pool.filter(function(it){ return it.week === w[0]; }), "done");
+      if (r) { list.appendChild(r.sec); shown += r.n; }
+    });
+  }
+  if (!shown) {
+    list.appendChild(el("p", {class:"empty", text: ui.filter === "revise"
+      ? "Nothing in " + TRACKS[ui.tab].name + " is marked revise. Mark a topic revise when you can't explain it out loud yet."
+      : "Everything in " + TRACKS[ui.tab].name + " is done. Pick another track above, or switch the filter to All topics to reread your notes."}));
+  }
+}
+function updateRow(id){
+  var li = list.querySelector('[data-id="' + id + '"]');
+  if (!li) return;
+  var it = BYID[id], s = statusOf(id), d = get(id);
+  li.className = "row t-" + it.track + " s-" + s + " kind-" + it.kind;
+  var pill = li.querySelector(".pill"); pill.className = "pill s-" + s; pill.textContent = SLABEL[s];
+  li.querySelector(".rowbtn .sub").replaceWith(buildSub(it));
+  li.querySelector(".conf").replaceWith(confDots(d.c));
+  li.querySelectorAll("[data-s]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.s === s)); });
+  li.querySelectorAll("[data-c]").forEach(function(b){ b.setAttribute("aria-pressed", String(Number(b.dataset.c) === d.c)); });
+  var cov = li.querySelector(".cover"); if (cov) syncCover(cov, id);
+  var date = li.querySelector('input[type="date"]'); if (date && document.activeElement !== date) date.value = d.date || "";
+}
+function refresh(id){
+  updateRow(id); updateGrid(); updatePanels(); updateStats(); renderTabs(); updateGreeting();
+}
+function renderAll(){
+  panels.main.reset(); panels.dsa.reset();
+  updateGrid(); updatePanels(); updateStats(); renderTabs(); renderList(); updateGreeting(); pickLine();
+}
+function openItem(id, focusNotes){
+  var it = BYID[id];
+  ui.tab = it.track;
+  if (!visible(it)) { ui.filter = "all"; document.getElementById("filter").value = "all"; }
+  ui.open[id] = 1;
+  renderTabs(); renderList();
+  var li = list.querySelector('[data-id="' + id + '"]');
+  if (!li) return;
+  li.scrollIntoView({block:"start", behavior:reduced ? "auto" : "smooth"});
+  var target = focusNotes ? li.querySelector("textarea") : li.querySelector(".rowbtn");
+  if (target) target.focus({preventScroll:true});
+}
+
+/* ---------- notice ---------- */
+var notice = document.getElementById("notice"), noticeAction = null;
+function showNotice(text, action){
+  document.getElementById("noticeText").textContent = text;
+  var yes = document.getElementById("noticeYes"), no = document.getElementById("noticeNo");
+  noticeAction = action || null;
+  yes.hidden = !action;
+  if (action) yes.textContent = action.label;
+  no.textContent = action ? "Cancel" : "OK";
+  notice.hidden = false;
+  (action ? no : no).focus();
+}
+function hideNotice(){ notice.hidden = true; noticeAction = null; }
+document.getElementById("noticeNo").addEventListener("click", hideNotice);
+document.getElementById("noticeYes").addEventListener("click", function(){ var a = noticeAction; hideNotice(); if (a) a.fn(); });
+document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !notice.hidden) hideNotice(); });
+
+/* ---------- backup and restore ---------- */
+var backupBtn = document.getElementById("backupBtn");
+var dlCap = null;
+if (window.claude && typeof window.claude.use === "function") {
+  backupBtn.hidden = true;
+  window.claude.use("downloads").then(function(d){ dlCap = d; if (d) backupBtn.hidden = false; }, function(){});
+}
+backupBtn.addEventListener("click", function(){
+  var data = JSON.stringify({app:"study-plan", v:1, exportedAt:new Date().toISOString(), items:state.items}, null, 2);
+  var name = "study-plan-backup-" + ymd(new Date()) + ".json";
+  if (dlCap) {
+    dlCap.save({filename:name, data:data}).then(function(){ flash("Backup saved"); }, function(e){
+      if (!e || e.code !== "declined") showNotice("The backup couldn't be saved from here. Try again in a moment.");
+    });
+    return;
+  }
+  var a = el("a", {href:URL.createObjectURL(new Blob([data], {type:"application/json"})), download:name});
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  flash("Backup saved");
+});
+var restoreInput = document.getElementById("restoreInput");
+document.getElementById("restoreBtn").addEventListener("click", function(){ restoreInput.click(); });
+restoreInput.addEventListener("change", function(){
+  var f = restoreInput.files && restoreInput.files[0];
+  restoreInput.value = "";
+  if (!f) return;
+  f.text().then(function(txt){
+    var obj = null; try { obj = JSON.parse(txt); } catch(e) {}
+    if (!obj || obj.app !== "study-plan" || !obj.items || typeof obj.items !== "object") {
+      showNotice("That file isn't a study plan backup. Choose the .json file you saved with Download backup.");
+      return;
+    }
+    var items = clean(obj.items), n = Object.keys(items).length;
+    showNotice("Replace your current progress with this backup? It has progress on " + n + (n === 1 ? " topic." : " topics."), {
+      label:"Replace progress",
+      fn:function(){ state = {v:1, items:items, updatedAt:Date.now()}; ui.open = {}; persist(); renderAll(); flash("Backup restored"); }
+    });
+  });
+});
+document.getElementById("resetBtn").addEventListener("click", function(){
+  showNotice("Clear every status, rating and note? Download a backup first if you might want them back.", {
+    label:"Clear all progress",
+    fn:function(){ state = {v:1, items:{}, updatedAt:Date.now()}; ui.open = {}; ui.tab = "hld"; persist(); renderAll(); flash("Progress cleared"); }
+  });
+});
+
+/* ---------- menu ---------- */
+var menu = document.getElementById("menu");
+menu.querySelectorAll(".menu-pop button").forEach(function(b){ b.addEventListener("click", function(){ menu.open = false; }); });
+document.addEventListener("click", function(e){ if (menu.open && !menu.contains(e.target)) menu.open = false; });
+document.addEventListener("keydown", function(e){ if (e.key === "Escape" && menu.open) { menu.open = false; menu.querySelector("summary").focus(); } });
+
+/* ---------- start ---------- */
+var tabsBar = document.querySelector(".tabs");
+function fitScrollPadding(){ document.documentElement.style.scrollPaddingTop = "calc(env(safe-area-inset-top, 0px) + " + (tabsBar.offsetHeight + 12) + "px)"; }
+window.addEventListener("resize", fitScrollPadding);
+renderAll();
+fitScrollPadding();
+connectAccount();
+})();
+</script>
+</body>
+</html>
